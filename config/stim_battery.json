@@ -1,0 +1,6 @@
+{
+    "THINGS":{
+        "items_csv": "../data/spose/items1854names.tsv",
+        "human_embeddings": "../data/spose/spose_human_49d.txt"
+    }
+}

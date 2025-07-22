@@ -1,3 +1,5 @@
+##SETUP###
+
 from torch import Tensor, nn
 
 from torch.distributions.categorical import Categorical
@@ -27,14 +29,39 @@ PARENT_DIR = os.path.abspath(os.path.join(BASE_DIR, ".."))
 if PARENT_DIR not in sys.path:
     sys.path.append(PARENT_DIR)
 
+from core.hf_model_wrapper import HFModelWrapper
 
 
+with open(MODEL_CONFIG_PATH, "r") as f:
+    MODEL_JSON = json.load(f)
+
+
+###EXPERIMENTS###
+
+def triplet_run_1_a(model_config, stimuli_key, **kwargs):
+    """
+    Run triplet inference experiment 1a
+    """
+    global experiment_name
+    model = MODEL_JSON[model_config]
+
+    model = HFModelWrapper(
+            model["model_name"],
+            tokenizer=model["tokenizer_name"],
+            do_chat_template=model["do_chat_template"],
+            model_load=model["model_load"],
+            cache_dir=os.getenv("CACHE_DIR")
+        )
 
 
 EXPERIMENTS = {
-    "triplet_run_1_a": "t"
+    "triplet_run_1_a": triplet_run_1_a
 }
 
+
+
+
+###CMDLINE ARGS####
 if __name__ == "__main__":
     if len(sys.argv) != 4:
         print("Usage: python script/exp_battery.py <experiment_name> <model_config_name> <stimuli_key>")

@@ -1,0 +1,7 @@
+{
+    "triplet_run_1_a":{
+        "n_items": 2400,
+        "euclid_min": 0.1,
+        "euclid_max": 0.9
+    }
+}
