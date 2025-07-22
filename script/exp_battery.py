@@ -62,9 +62,17 @@ def triplet_run_1_a(model_config, stimuli_key, **kwargs):
             cache_dir=os.getenv("CACHE_DIR")
         )
     
-    things_stimuli = StimuliSet(stimuli["items_tsv"], stimuli["src_key"], exp["instruct_prompt"], ref_embeddings=stimuli["human_embeddings"])
+    things_stimuli = StimuliSet(
+                        stimuli["items_tsv"], 
+                        stimuli["src_key"], 
+                        exp["instruct_prompt"], 
+                        ref_embeddings=stimuli["human_embeddings"], 
+                        euclid_min=exp["euclid_min"], 
+                        euclid_max=exp["euclid_max"]
+                    )
 
     things_stimuli.export_embeddings_csv("embeddings_human_out.csv")
+    things_stimuli.get_stimuli_csv("stim_out.csv")
 
     
 
