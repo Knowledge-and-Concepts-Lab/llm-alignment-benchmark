@@ -156,11 +156,11 @@ class StimuliSet:
         return unique_dict
 
 
-    def get_stimuli_list(self):
+    def get_stimuli_df(self):
         """
         Get a list of stimuli objects for inference
         """
-        return self.stimuli
+        return pd.DataFrame(self.stimuli)
     
 
     def get_stimuli_csv(self, csv_path:str):

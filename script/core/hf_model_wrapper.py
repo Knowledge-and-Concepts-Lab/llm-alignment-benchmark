@@ -82,8 +82,8 @@ class HFModelWrapper:
 
 
     def do_model_generation(self, prompt: str, 
-                            max_new_tokens: int = 10, 
-                            do_sample: bool = True):
+                            max_new_tokens: int = 10,
+                            instr_prompt: str=None):
         """
         Generate text using the model.
         """
@@ -107,35 +107,31 @@ class HFModelWrapper:
                     add_generation_prompt=True
                 ).to(self.model.device)
                 print(self.tokenizer.decode(input_ids[0]))
-
+        
 
             else:
+                if instr_prompt: #add instr prompt (i.e "answer:") if specified
+                    prompt = prompt + instr_prompt
                 input_ids = self.tokenizer(prompt, return_tensors="pt").input_ids.cuda()
 
             generated_ids = self.model.generate(input_ids, max_new_tokens=max_new_tokens)
             return self.tokenizer.batch_decode(generated_ids, skip_special_tokens=True)[0]
+        
+
+    def do_model_batch_generation(self, prompt_list, max_new_tokens, instr_prompt):
+        """
+        Do batch inference for a vector of prompt inputs
+        """
+        res_list = []
+
+        for p in prompt_list:
+            res = self.do_model_generation(p, max_new_tokens, instr_prompt)
+            print(res)
+            res_list.append(res)
+
+        return res_list
 
 
-if __name__ == "__main__":
 
-    model_name = "google/gemma-3-1b-it"
-
-    tokenizer_name = model_name   
-
-    print(model_name)
-    print(tokenizer_name) 
-    wrapper = HFModelWrapper(
-        model_name, 
-        tokenizer=tokenizer_name, 
-        do_chat_template=True,
-        cache_dir="/mnt/dv/wid/projects3/Rogers-muri-human-ai/zstuddiford", 
-        model_load="direct"
-    )
-    
-    prompt = "What is the capital of France?"
-
-    response = wrapper.do_model_generation(prompt, max_new_tokens=10)
-
-    print(response)
     
     

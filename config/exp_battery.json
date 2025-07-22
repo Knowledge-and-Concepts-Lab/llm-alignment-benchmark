@@ -1,6 +1,6 @@
 {
     "triplet_run_1_a":{
-        "instruct_prompt": "Which is more similar to {item_x}, {item_y} or {item_z}?",
+        "instruct_prompt": "You are an AI model which gives responses to questions. QUESTION: Which is the odd one out? {item_x}, {item_y} or {item_z}? Respond only with the item name. ",
         "n_items": 2400,
         "euclid_min": 2.5,
         "euclid_max": 3.5
