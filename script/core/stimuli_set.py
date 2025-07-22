@@ -9,14 +9,13 @@ import os
 import sys
 import json
 import torch
-from transformers import AutoTokenizer, AutoModelForCausalLM, pipeline
 import pandas as pd
 from random import choice, sample
 from numpy.linalg import norm
 
 class StimuliSet:
 
-    def __init__(self, src_tsv:str, src_key:str, format_prompt:str, n_items = 1000, ref_embeddings=None, euclid_min=0.0, euclid_max=1.0):
+    def __init__(self, src_tsv:str, src_key:str, format_prompt:str, n_items = 1000, ref_embeddings=None, euclid_min=-1, euclid_max=-1):
         
         self.src_tsv = src_tsv
         self.src_df = pd.read_csv(self.src_tsv, sep="\t")
@@ -27,19 +26,18 @@ class StimuliSet:
         self.ref_embeddings = self.__read_embeddings(ref_embeddings, self.src_df, self.src_key) if ref_embeddings is not None else None
 
         self.format_prompt = format_prompt
-    
+
+        #create stimuli using reference embeddings constraints if defined
         self.stimuli = self.__construct_stimuli(n_items=n_items, ref_embeddings=self.ref_embeddings, euclid_min=euclid_min, euclid_max=euclid_max)
 
+        #get formatted prompts
+        self.__interpolate_format_strings()
 
-    def __construct_stimuli(self, n_items, ref_embeddings=None, euclid_min=0.0, euclid_max=1.0) -> list[dict]:
+    def __construct_stimuli(self, n_items, ref_embeddings=None, euclid_min=-1, euclid_max=-1) -> list[dict]:
         
-        ref_embeddings=None
-
         stimuli = []
-        keys = self.src_df[self.src_key].astype(str).tolist()
 
-        if ref_embeddings is not None:
-            print(f"[DEBUG] Using reference embeddings for distance constraints")
+        keys = self.src_df[self.src_key].astype(str).tolist()
 
         attempts = 0
         max_attempts = n_items * 100  # fail-safe to prevent infinite loops
@@ -49,7 +47,7 @@ class StimuliSet:
             item_x = choice(keys)
 
             if ref_embeddings is None:
-                # If no embedding constraints, just sample two other items
+                # If no embedding constraints, just sample two other items normally
                 rest = [k for k in keys if k != item_x]
                 item_y, item_z = sample(rest, 2)
                 dist_xy = dist_xz = dist_yz = None
@@ -97,12 +95,33 @@ class StimuliSet:
         if attempts >= max_attempts:
             print(f"[WARN] Max attempts reached. Collected {len(stimuli)} valid triplets.")
 
-        print(f"[DEBUG] Constructed {len(stimuli)} stimuli")
+        print(f"Constructed {len(stimuli)} stimuli")
         print(stimuli)
         return stimuli
 
-        
 
+
+    def __interpolate_format_strings(self):
+        """
+        Interpolate the format_prompt string using item_x, item_y, item_z for each stimulus.
+        Adds a new 'format_str' field to each stimulus in self.stimuli.
+        """
+        if self.format_prompt is None:
+            raise ValueError("format_prompt is None — cannot interpolate.")
+
+        for stim in self.stimuli:
+            try:
+                formatted = self.format_prompt.format(
+                    item_x=stim["item_x"],
+                    item_y=stim["item_y"],
+                    item_z=stim["item_z"]
+                )
+                stim["format_str"] = formatted
+            except KeyError as e:
+                print(f"[WARN] Missing key in format string: {e}")
+                stim["format_str"] = ""
+
+        
     
     def __read_embeddings(self, embeddings_path: str, items_df: pd.DataFrame, match_key: str) -> dict[str, np.ndarray]:
         """
@@ -137,27 +156,25 @@ class StimuliSet:
         return unique_dict
 
 
-
-    def __get_items_in_ref_distance(self, ref_distance:float) -> list:
-        """
-        Get items that are within a certain distance from the reference embedding.
-        """
-        if self.ref_embeddings is None:
-            raise ValueError("Reference embeddings not provided.")
-        
-        return
-
     def get_stimuli_list(self):
         """
         Get a list of stimuli objects for inference
         """
-        return
+        return self.stimuli
+    
 
-    def get_stimuli_csv(self):
+    def get_stimuli_csv(self, csv_path:str):
         """
         Export csv of stimuli objects
         """
-        return
+        if not self.stimuli or not isinstance(self.stimuli, list):
+            raise ValueError("Stimuli not constructed or invalid format.")
+
+        df = pd.DataFrame(self.stimuli)
+        df.to_csv(csv_path, index=False)
+        print(f"Exported {len(df)} stimuli triplets to {csv_path}")
+
+
 
     def export_embeddings_csv(self, output_path: str):
         """
