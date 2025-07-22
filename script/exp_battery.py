@@ -19,7 +19,7 @@ import json
 os.environ["PYTORCH_CUDA_ALLOC_CONF"] = "expandable_segments:True"
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-CONFIG_PATH = os.path.join(BASE_DIR, "..", "config", "stim_battery.json")
+STIM_CONFIG_PATH = os.path.join(BASE_DIR, "..", "config", "stim_battery.json")
 MODEL_CONFIG_PATH = os.path.join(BASE_DIR, "..", "config", "model_battery.json")
 EXP_CONFIG_PATH = os.path.join(BASE_DIR, "..", "config", "exp_battery.json")
 
@@ -30,10 +30,16 @@ if PARENT_DIR not in sys.path:
     sys.path.append(PARENT_DIR)
 
 from core.hf_model_wrapper import HFModelWrapper
+from core.stimuli_set import StimuliSet
 
 
-with open(MODEL_CONFIG_PATH, "r") as f:
-    MODEL_JSON = json.load(f)
+def load_json(path):
+    with open(path, "r") as f:
+        return json.load(f)
+
+MODEL_JSON = load_json(MODEL_CONFIG_PATH)
+STIM_JSON = load_json(STIM_CONFIG_PATH)
+EXP_JSON = load_json(EXP_CONFIG_PATH)
 
 
 ###EXPERIMENTS###
@@ -43,7 +49,10 @@ def triplet_run_1_a(model_config, stimuli_key, **kwargs):
     Run triplet inference experiment 1a
     """
     global experiment_name
+
     model = MODEL_JSON[model_config]
+    stimuli = STIM_JSON[stimuli_key]
+    exp = EXP_JSON[experiment_name]
 
     model = HFModelWrapper(
             model["model_name"],
@@ -52,6 +61,12 @@ def triplet_run_1_a(model_config, stimuli_key, **kwargs):
             model_load=model["model_load"],
             cache_dir=os.getenv("CACHE_DIR")
         )
+    
+    things_stimuli = StimuliSet(stimuli["items_tsv"], stimuli["src_key"], exp["instruct_prompt"], ref_embeddings=stimuli["human_embeddings"])
+
+    things_stimuli.export_embeddings_csv("embeddings_human_out.csv")
+
+    
 
 
 EXPERIMENTS = {
