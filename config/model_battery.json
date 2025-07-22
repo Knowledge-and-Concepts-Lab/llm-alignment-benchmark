@@ -1,0 +1,9 @@
+{
+    "gemma-3-1b-it": {
+        "model_name": "google/gemma-3-1b-it",
+        "tokenizer_name": "google/gemma-3-1b-it",
+        "do_chat_template": true,
+        "model_load": "direct"
+    }
+
+}
