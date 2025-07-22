@@ -54,7 +54,7 @@ def triplet_run_1_a(model_config, stimuli_key, **kwargs):
     stimuli = STIM_JSON[stimuli_key]
     exp = EXP_JSON[experiment_name]
 
-    model = HFModelWrapper(
+    hf_model = HFModelWrapper(
             model["model_name"],
             tokenizer=model["tokenizer_name"],
             do_chat_template=model["do_chat_template"],
@@ -70,18 +70,17 @@ def triplet_run_1_a(model_config, stimuli_key, **kwargs):
                         euclid_min=exp["euclid_min"], 
                         euclid_max=exp["euclid_max"]
                     )
-
-    things_stimuli.export_embeddings_csv("embeddings_human_out.csv")
-    things_stimuli.get_stimuli_csv("stim_out.csv")
-
     
+    things_df = things_stimuli.get_stimuli_df()
+    model_res_list = hf_model.do_model_batch_generation(things_df["format_str"], max_new_tokens=10, instr_prompt=model["answer_format"])
+
+    print(model_res_list)
+
 
 
 EXPERIMENTS = {
     "triplet_run_1_a": triplet_run_1_a
 }
-
-
 
 
 ###CMDLINE ARGS####
