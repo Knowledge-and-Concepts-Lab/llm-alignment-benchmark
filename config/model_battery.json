@@ -18,7 +18,14 @@
         "tokenizer_name": "google/gemma-3-12b-pt",
         "do_chat_template": false,
         "model_load": "direct",
-        "answer_format": "The answer is "
+        "answer_format": "Answer: "
+    },
+    "gemma-3-12b-it":{
+        "model_name": "google/gemma-3-12b-it",
+        "tokenizer_name": "google/gemma-3-12b-it",
+        "do_chat_template": true,
+        "model_load": "direct",
+        "answer_format": null
     }
 
 }

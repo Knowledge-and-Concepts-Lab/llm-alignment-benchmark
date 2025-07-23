@@ -13,7 +13,7 @@ import re
 from turtle import distance
 import torch
 import warnings
-import utils
+import spose.utils as utils
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -25,8 +25,8 @@ from collections import defaultdict
 from scipy.stats import linregress
 from torch.optim import Adam, AdamW
 
-from plotting import *
-from models.model import *
+from spose.plotting import *
+from spose.models.model import *
 
 os.environ['PYTHONIOENCODING']='UTF-8'
 os.environ['CUDA_LAUNCH_BLOCKING']=str(1)

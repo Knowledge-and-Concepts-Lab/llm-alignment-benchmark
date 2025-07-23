@@ -11,17 +11,7 @@ import json
 import torch
 from transformers import AutoTokenizer, AutoModelForCausalLM, pipeline
 
-# --- SETUP FLEXIBLE PATH CONFIGURATION ---
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))  
-PROJECT_ROOT = os.path.abspath(os.path.join(BASE_DIR, "..", ".."))
-CONFIG_DIR = os.path.join(PROJECT_ROOT, "config")  
-sys.path.append(PROJECT_ROOT) 
-
-os.environ["HF_HOME"] = "/mnt/dv/wid/projects3/Rogers-muri-human-ai/zstuddiford"
-os.environ["XDG_CACHE_HOME"] = "/mnt/dv/wid/projects3/Rogers-muri-human-ai/zstuddiford"
-os.environ["TRANSFORMERS_CACHE"] = "/mnt/dv/wid/projects3/Rogers-muri-human-ai/zstuddiford"
-os.environ["HF_HUB_CACHE"] = "/mnt/dv/wid/projects3/Rogers-muri-human-ai/zstuddiford"
-
+import utils.model_utils as model_utils
 
 
 class HFModelWrapper:
@@ -118,18 +108,47 @@ class HFModelWrapper:
             return self.tokenizer.batch_decode(generated_ids, skip_special_tokens=True)[0]
         
 
-    def do_model_batch_generation(self, prompt_list, max_new_tokens, instr_prompt):
+    def do_model_batch_generation(self, prompt_list, max_new_tokens, instr_prompt, triplet_cols: list):
         """
-        Do batch inference for a vector of prompt inputs
-        """
-        res_list = []
+        Do batch inference for a vector of prompt inputs.
 
-        for p in prompt_list:
-            res = self.do_model_generation(p, max_new_tokens, instr_prompt)
+        triplet_cols must be a list of three equal-length lists: [x, y, z].
+        Returns a list of dicts with keys: anchor, winner, loser.
+        """
+        if triplet_cols is None or len(triplet_cols) != 3:
+            raise ValueError("triplet_cols must be a list of three columns: [x, y, z]")
+        if not all(len(col) == len(prompt_list) for col in triplet_cols):
+            raise ValueError("Each triplet column must match prompt_list length")
+
+        x, y, z = triplet_cols
+        results = []
+
+        for i, prompt in enumerate(prompt_list):
+            res = self.do_model_generation(prompt, max_new_tokens, instr_prompt)
             print(res)
-            res_list.append(res)
+            if res is None:
+                results.append({"anchor": None, "winner": None, "loser": None})
+                continue
 
-        return res_list
+            anchor = x[i]
+            candidates = [y[i], z[i]]
+            chosen = model_utils.clean_model_response_match(res, candidates)
+
+            if chosen == y[i]:
+                loser = y[i]
+                winner = z[i]
+            elif chosen == z[i]:
+                loser = z[i]
+                winner = y[i]
+            else:
+                # If model response didn't match either candidate
+                winner = None
+                loser = None
+
+            results.append({"anchor": anchor, "winner": winner, "loser": loser})
+
+        return results
+
 
 
 

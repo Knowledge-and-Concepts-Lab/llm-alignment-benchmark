@@ -101,25 +101,36 @@ class StimuliSet:
 
 
 
-    def __interpolate_format_strings(self):
+    def __interpolate_format_strings(self, shuffle: bool = True):
         """
         Interpolate the format_prompt string using item_x, item_y, item_z for each stimulus.
+        If shuffle=True (default), the order of item_y and item_z is randomly shuffled.
         Adds a new 'format_str' field to each stimulus in self.stimuli.
         """
         if self.format_prompt is None:
             raise ValueError("format_prompt is None — cannot interpolate.")
 
         for stim in self.stimuli:
+            if shuffle:
+                y, z = stim["item_y"], stim["item_z"]
+                shuffled_yz = sample([y, z], 2)
+                stim["shuffled_item_y"], stim["shuffled_item_z"] = shuffled_yz
+            else:
+                stim["shuffled_item_y"] = stim["item_y"]
+                stim["shuffled_item_z"] = stim["item_z"]
+
             try:
                 formatted = self.format_prompt.format(
                     item_x=stim["item_x"],
-                    item_y=stim["item_y"],
-                    item_z=stim["item_z"]
+                    item_y=stim["shuffled_item_y"],
+                    item_z=stim["shuffled_item_z"]
                 )
                 stim["format_str"] = formatted
             except KeyError as e:
                 print(f"[WARN] Missing key in format string: {e}")
                 stim["format_str"] = ""
+
+
 
         
     
@@ -162,6 +173,12 @@ class StimuliSet:
         """
         return pd.DataFrame(self.stimuli)
     
+    def get_raw_df(self):
+        """
+        Get the raw source DataFrame used to construct the stimuli.
+        """
+        return self.src_df
+    
 
     def get_stimuli_csv(self, csv_path:str):
         """
@@ -174,6 +191,25 @@ class StimuliSet:
         df.to_csv(csv_path, index=False)
         print(f"Exported {len(df)} stimuli triplets to {csv_path}")
 
+
+    def get_item_index_mapping(self, column_name: str) -> dict:
+        """
+        Generate a mapping from unique string values in the specified column
+        of the stimuli dataframe to unique integer indices.
+        
+        Args:
+            column_name (str): Name of the column to index.
+
+        Returns:
+            dict: Mapping from string item to integer index.
+        """
+        df = self.get_raw_df()
+        if column_name not in df.columns:
+            raise ValueError(f"Column '{column_name}' not found in stimuli dataframe.")
+        
+        unique_items = pd.unique(df[column_name].astype(str))
+        item2idx = {item: idx for idx, item in enumerate(sorted(unique_items))}
+        return item2idx
 
 
     def export_embeddings_csv(self, output_path: str):
