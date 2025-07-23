@@ -9,8 +9,8 @@ import torch
 
 import numpy as np
 
-from utils import BatchGenerator, load_data, load_model, validation
-from models.model import SPoSE, VSPoSE
+from spose.utils import BatchGenerator, load_data, load_model, validation
+from spose.models.model import SPoSE, VSPoSE
 
 os.environ['PYTHONIOENCODING']='UTF-8'
 
