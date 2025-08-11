@@ -1,25 +1,13 @@
 {
     "triplet_run_1_a":{
-        "instruct_prompt": "You are a helpful assistant which gives responses to questions. QUESTION: Which is the odd one out? {item_x}, {item_y} or {item_z}? Respond only with the item name. ",
-        "n_items": 20,
+        "instruct_prompt": "You are a helpful assistant who gives responses to questions. QUESTION: Which item is most similar to {item_x}: {item_y} or {item_z}? Respond only with the item name. ",
+        "n_items": 2000,
         "euclid_min": 2.5,
         "euclid_max": 3.5
     },
     "embedding_1_a": {
-        "rnd_seed": 42,
-        "modality": "behavioral/",
-        "batch_size": 100,
-        "embed_dim": 90,
-        "epochs": 500,
-        "window_size": 50,
-        "sampling_method": "normal",
-        "lmbda": 0.001,
-        "lr": 0.001,
-        "steps": 10,
-        "resume": false,
-        "p": null,
-        "distance_metric": "dot",
-        "temperature": 1.0,
-        "early_stopping": true
+        "d": 10,
+        "max_epochs": 50000,
+        "embeddings_name": "1a_salmon_embeddings"
   }
 }

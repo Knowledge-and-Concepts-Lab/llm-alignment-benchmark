@@ -15,10 +15,19 @@ from numpy.linalg import norm
 
 class StimuliSet:
 
-    def __init__(self, src_tsv:str, src_key:str, format_prompt:str, n_items = 1000, ref_embeddings=None, euclid_min=-1, euclid_max=-1):
+    def __init__(self, src_tsv:str, src_key:str, format_prompt:str, n_items = 1000, ref_embeddings=None, euclid_min=-1, euclid_max=-1, subset_k: int = None):
         
         self.src_tsv = src_tsv
         self.src_df = pd.read_csv(self.src_tsv, sep="\t")
+
+        if subset_k is not None: #optionally filter select only a subset of the original items. Note that this will result in a different integer-item word mapping and you will need to xref
+            all_keys = self.src_df[self.src_key].astype(str).unique().tolist()
+            if subset_k > len(all_keys):
+                raise ValueError(f"Requested subset_k={subset_k} exceeds available unique items ({len(all_keys)})")
+            sampled_keys = set(sample(all_keys, subset_k))
+            self.src_df = self.src_df[self.src_df[self.src_key].astype(str).isin(sampled_keys)].copy()
+            print(f"[INFO] Filtered to a random subset of {subset_k} items.")
+
         self.src_key=src_key
 
         print(f"{self.src_tsv} successfully loaded as stimuli")
