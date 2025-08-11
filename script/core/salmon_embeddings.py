@@ -38,9 +38,9 @@ class SalmonEmbeddings:
         triplets = []
         for _, row in df.iterrows():
             try:
-                h = item_to_id[row["head_key"]]
-                w = item_to_id[row["winner_key"]]
-                l = item_to_id[row["loser_key"]]
+                h = item_to_id[row["head"]]
+                w = item_to_id[row["winner"]]
+                l = item_to_id[row["loser"]]
                 triplets.append((h, w, l))
             except KeyError:
                 continue  # skip rows with missing keys
