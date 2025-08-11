@@ -10,7 +10,7 @@ error = error_$(Cluster)_$(Process).err
 
 +is_resumable = false
 should_transfer_files = YES
-transfer_input_files = experiment.sh, SAE_concepts.tar
+transfer_input_files = experiment.sh, llm_alignment_benchmark.tar
 when_to_transfer_output = ON_EXIT_OR_EVICT
 
 
