@@ -1,0 +1,85 @@
+# Python cache/compiled files
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+
+# Virtual environments
+.env
+.venv
+env/
+venv/
+ENV/
+
+# Conda environments
+*.conda
+*.yaml
+*.yml
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# Logs and debug
+*.log
+logs/
+debug.log
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editor-specific
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Build/packaging
+build/
+dist/
+*.egg-info/
+.eggs/
+
+# Cache
+.cache/
+.pytest_cache/
+mypy_cache/
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+*.swp
+*.swo
+
+# Hugging Face / Transformers cache
+huggingface/
+transformers/
+HF_HOME/
+TRANSFORMERS_CACHE/
+triton_cache/
+temp_cache/
+
+# Experiment results and outputs
+results/
+*.tar
+*.tar.gz
+*.zip
+*.csv
+*.tsv
+
+# Model weights
+*.bin
+*.pt
+*.ckpt
+*.h5
+*.onnx
+
+# CHTC / job artifacts
+*.out
+*.err
+*.log
+experiment.sh
+_results_tmp_unpack/
+

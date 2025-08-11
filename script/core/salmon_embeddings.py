@@ -24,7 +24,6 @@ class SalmonEmbeddings:
         self.config = config
 
     
-    
     def create_embeddings(self, csv_dir: str):
         max_expochs = self.config.get("max_epochs", 50000)
         d = self.config.get("d", 10)
