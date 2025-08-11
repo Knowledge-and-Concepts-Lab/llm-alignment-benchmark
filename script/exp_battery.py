@@ -33,10 +33,11 @@ if PARENT_DIR not in sys.path:
 
 from core.hf_model_wrapper import HFModelWrapper
 from core.stimuli_set import StimuliSet
-from core.spose_embeddings import SposeEmbeddings
 import utils.embeddings_utils as embeddings_utils 
+from core.salmon_embeddings import SalmonEmbeddings
 
-import spose.train as spose
+from core.salmon_embeddings import SalmonEmbeddings
+
 
 def load_json(path):
     with open(path, "r") as f:
@@ -86,50 +87,29 @@ def triplet_run_1_a(model_config, stimuli_key, **kwargs):
             things_df["item_x"],
             things_df["item_y"],
             things_df["item_z"]
-        ]
+        ],
+        choose_mode=model["choose_mode"]
     )
 
     # check for optional version_dir
     version_dir = kwargs.get("version_dir", None)
     if version_dir:
-        raw_out_dir = os.path.join("results", version_dir, "raw_out", model_config)
         embed_out_dir = os.path.join("results", version_dir, "embed_in", model_config)
-        os.makedirs(raw_out_dir, exist_ok=True)
         os.makedirs(embed_out_dir, exist_ok=True)
+        os.makedirs(embed_out_dir, exist_ok=True)
+        output_csv = os.path.join(embed_out_dir, f"model_triplet_output_{model_config}_{stimuli_key}.csv")
 
-        output_csv = os.path.join(raw_out_dir, f"model_triplet_output_{model_config}_{stimuli_key}.csv")
-        train_path = os.path.join(embed_out_dir, "train_90.txt")
-        test_path = os.path.join(embed_out_dir, "test_10.txt")
     else:
         output_csv = f"model_triplet_output_{model_config}_{stimuli_key}.csv"
-        train_path = f"train_90_{model_config}_{stimuli_key}.txt"
-        test_path = f"test_10_{model_config}_{stimuli_key}.txt"
 
     # Save model output CSV
     pd.DataFrame(model_res_list).to_csv(output_csv, index=False)
     print(f"[INFO] Saved model triplet results to {output_csv}")
 
-    # Integer triplet mapping
-    integer_mappings = things_stimuli.get_item_index_mapping(stimuli["src_key"])
-    raw_index_triplets = embeddings_utils.map_triplet_dicts_to_indices(integer_mappings, model_res_list)
-    raw_index_triplets = np.array(raw_index_triplets)
-    n_total = raw_index_triplets.shape[0]
-    # Split into train/test
-    n_test = max(1, int(n_total * 0.1))
-    test_indices = np.random.choice(n_total, size=n_test, replace=False)
-    train_indices = np.setdiff1d(np.arange(n_total), test_indices)
-
-    np.savetxt(train_path, raw_index_triplets[train_indices], fmt="%d")
-    np.savetxt(test_path, raw_index_triplets[test_indices], fmt="%d")
-
-    print(f"[INFO] Saved train triplets to {train_path}")
-    print(f"[INFO] Saved test triplets to {test_path}")
-
-
 
 def embedding_1_a(model_config, stimuli_key, **kwargs):
     """
-    Create embeddings from model responses
+    Create salmon embeddings from model responses
     """
     global experiment_name
 
@@ -138,49 +118,24 @@ def embedding_1_a(model_config, stimuli_key, **kwargs):
     # Require version_dir
     version_dir = kwargs.get("version_dir", None)
     if version_dir is None:
-        raise ValueError("embedding_1_a requires a 'version_dir' argument")
+        raise ValueError("embedding_salmon_1_a requires a 'version_dir' argument")
 
     # Compose input/output paths
-    triplets_dir = os.path.join("results", version_dir, "embed_in", model_config, "train_90.txt")
-    results_dir = os.path.join("results", version_dir, "embed_out", model_config)
-    plots_dir = results_dir  # Use same dir for plots
+    triplets_dir = os.path.join("results", version_dir, "embed_in", model_config, f"model_triplet_output_{model_config}_{stimuli_key}.csv")
+    results_folder = os.path.join("results", version_dir, "embed_out", model_config)
+    results_dir = os.path.join("results", version_dir, "embed_out", model_config, f"embeddings_{model_config}.csv")
+    os.makedirs(results_folder, exist_ok=True)
 
-    if not os.path.exists(triplets_dir):
-        raise FileNotFoundError(f"[ERROR] Could not find triplets file at {triplets_dir}")
-    os.makedirs(results_dir, exist_ok=True)
+    #initialize embeddings
+    embeddings_model = SalmonEmbeddings(
+        csv_dir=triplets_dir,
+        config=embeddings_params,
+        embeddings_dir=results_dir
+    )
+    
+    embeddings_model.create_embeddings(triplets_dir)
 
-    print(f"[INFO] Using triplets file: {triplets_dir}")
-    print(f"[INFO] Saving SPoSE outputs to: {results_dir}")
-
-    # Compose full args dict from config
-    spose_args = {
-        "task": "odd_one_out",
-        "rnd_seed": embeddings_params.get("rnd_seed", 42),
-        "modality": embeddings_params.get("modality", "behavioral/"),
-        "results_dir": results_dir,
-        "plots_dir": plots_dir,
-        "triplets_dir": triplets_dir,
-        "device": torch.device("cuda:0"),
-        "batch_size": embeddings_params.get("batch_size", 100),
-        "embed_dim": embeddings_params.get("embed_dim", 90),
-        "epochs": embeddings_params.get("epochs", 500),
-        "window_size": embeddings_params.get("window_size", 50),
-        "sampling_method": embeddings_params.get("sampling_method", "normal"),
-        "lmbda": embeddings_params.get("lmbda", 0.001),
-        "lr": embeddings_params.get("lr", 0.001),
-        "steps": embeddings_params.get("steps", 10),
-        "resume": embeddings_params.get("resume", False),
-        "p": embeddings_params.get("p", None),
-        "distance_metric": embeddings_params.get("distance_metric", "dot"),
-        "temperature": embeddings_params.get("temperature", 1.0),
-        "early_stopping": embeddings_params.get("early_stopping", True)
-    }
-
-    # Call SPoSE training
-    spose.run(**spose_args)
-    print(f"[INFO] SPoSE embedding completed. Results saved to {results_dir}")
-
-
+    
 
 EXPERIMENTS = {
     "triplet_run_1_a": triplet_run_1_a,
