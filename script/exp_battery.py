@@ -87,7 +87,8 @@ def triplet_run_1_a(model_config, stimuli_key, **kwargs):
             things_df["item_x"],
             things_df["item_y"],
             things_df["item_z"]
-        ]
+        ],
+        choose_mode=model["choose_mode"]
     )
 
     # check for optional version_dir
