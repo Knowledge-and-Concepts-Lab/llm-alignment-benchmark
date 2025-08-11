@@ -26,6 +26,20 @@
         "do_chat_template": true,
         "model_load": "direct",
         "answer_format": null
+    },
+    "gemma-3-27b-pt":{
+        "model_name": "google/gemma-3-27b-pt",
+        "tokenizer_name": "google/gemma-3-12b-pt",
+        "do_chat_template": false,
+        "model_load": "direct",
+        "answer_format": "Answer: "
+    },
+    "internlm-7b":{
+        "model_name": "internlm/internlm-7b",
+        "tokenizer_name": "internlm/internlm-7b",
+        "do_chat_template": false,
+        "model_load": "direct",
+        "answer_format": "Answer: "
     }
 
 }

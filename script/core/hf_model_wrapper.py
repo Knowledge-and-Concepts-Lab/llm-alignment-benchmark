@@ -113,7 +113,7 @@ class HFModelWrapper:
         Do batch inference for a vector of prompt inputs.
 
         triplet_cols must be a list of three equal-length lists: [x, y, z].
-        Returns a list of dicts with keys: anchor, winner, loser.
+        Returns a list of dicts with keys: head, winner, loser.
         """
         if triplet_cols is None or len(triplet_cols) != 3:
             raise ValueError("triplet_cols must be a list of three columns: [x, y, z]")
@@ -127,10 +127,10 @@ class HFModelWrapper:
             res = self.do_model_generation(prompt, max_new_tokens, instr_prompt)
             print(res)
             if res is None:
-                results.append({"anchor": None, "winner": None, "loser": None})
+                results.append({"head": None, "winner": None, "loser": None})
                 continue
 
-            anchor = x[i]
+            head = x[i]
             candidates = [y[i], z[i]]
             chosen = model_utils.clean_model_response_match(res, candidates)
 
@@ -145,7 +145,7 @@ class HFModelWrapper:
                 winner = None
                 loser = None
 
-            results.append({"anchor": anchor, "winner": winner, "loser": loser})
+            results.append({"head": head, "winner": winner, "loser": loser})
 
         return results
 
