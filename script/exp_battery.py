@@ -33,13 +33,11 @@ if PARENT_DIR not in sys.path:
 
 from core.hf_model_wrapper import HFModelWrapper
 from core.stimuli_set import StimuliSet
-from core.spose_embeddings import SposeEmbeddings
 import utils.embeddings_utils as embeddings_utils 
 from core.salmon_embeddings import SalmonEmbeddings
 
 from core.salmon_embeddings import SalmonEmbeddings
 
-import spose.train as spose
 
 def load_json(path):
     with open(path, "r") as f:
@@ -95,11 +93,10 @@ def triplet_run_1_a(model_config, stimuli_key, **kwargs):
     # check for optional version_dir
     version_dir = kwargs.get("version_dir", None)
     if version_dir:
-        raw_out_dir = os.path.join("results", version_dir, "raw_out", model_config)
         embed_out_dir = os.path.join("results", version_dir, "embed_in", model_config)
-        os.makedirs(raw_out_dir, exist_ok=True)
         os.makedirs(embed_out_dir, exist_ok=True)
-        output_csv = os.path.join(raw_out_dir, f"model_triplet_output_{model_config}_{stimuli_key}.csv")
+        os.makedirs(embed_out_dir, exist_ok=True)
+        output_csv = os.path.join(embed_out_dir, f"model_triplet_output_{model_config}_{stimuli_key}.csv")
 
     else:
         output_csv = f"model_triplet_output_{model_config}_{stimuli_key}.csv"
@@ -123,13 +120,15 @@ def embedding_1_a(model_config, stimuli_key, **kwargs):
         raise ValueError("embedding_salmon_1_a requires a 'version_dir' argument")
 
     # Compose input/output paths
-    triplets_dir = os.path.join("results", version_dir, "embed_in", model_config, "train_90.txt")
-    results_dir = os.path.join("results", version_dir, "embed_out", model_config)
+    triplets_dir = os.path.join("results", version_dir, "embed_in", model_config, f"model_triplet_output_{model_config}_{stimuli_key}.csv")
+    results_folder = os.path.join("results", version_dir, "embed_out", model_config)
+    results_dir = os.path.join("results", version_dir, "embed_out", model_config, f"embeddings_{model_config}.csv")
+    os.makedirs(results_folder, exist_ok=True)
 
     #initialize embeddings
     embeddings_model = SalmonEmbeddings(
         csv_dir=triplets_dir,
-        config=embeddings_params["config"],
+        config=embeddings_params,
         embeddings_dir=results_dir
     )
     
