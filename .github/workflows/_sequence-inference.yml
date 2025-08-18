@@ -18,6 +18,13 @@ on:
         required: false
         type: boolean
         default: true
+    secrets:
+      HF_TOKEN:
+        required: false
+      OPENAI_API_TOKEN:
+        required: false
+      CACHE_DIR:
+        required: false
 
 jobs:
   run:
@@ -38,12 +45,16 @@ jobs:
         shell: bash -l {0}
         run: conda run -n "${CONDA_ENV}" python -V
 
-      - name: HF login (uses environment secrets if present)
-        if: ${{ secrets.HF_TOKEN != '' }}
+      - name: HF login (optional; skips if no token)
         shell: bash -l {0}
         env:
           HF_TOKEN: ${{ secrets.HF_TOKEN }}
-        run: conda run -n "${CONDA_ENV}" huggingface-cli login --token "$HF_TOKEN"
+        run: |
+          if [ -n "${HF_TOKEN}" ]; then
+            conda run -n "${CONDA_ENV}" huggingface-cli login --token "${HF_TOKEN}"
+          else
+            echo "HF_TOKEN not provided; skipping HF login."
+          fi
 
       - name: Prepare commands
         id: prep
