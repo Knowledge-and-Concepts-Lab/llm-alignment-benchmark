@@ -14,7 +14,7 @@ on:
         required: false
       CACHE_DIR:
         required: false
-      WANDB_API_KEY:     # needed if Weave/W&B requires auth
+      WANDB_API_KEY:        # W&B auth key if your Weave/W&B needs it
         required: false
 
 jobs:
@@ -23,12 +23,23 @@ jobs:
     environment: alignment_benchmark_env
     timeout-minutes: 1440
     env:
+      # ---- runtime / execution ----
       CONDA_ENV: alignment_benchmark_env
-      BASE_CMD: python3 -u script/exp_battery.py  # -u for live logs
-      # --- Weave/W&B toggles ---
-      WEAVE_ENABLED: ${{ vars.WEAVE_ENABLED || '1' }}      # or hardcode "1"
-      WEAVE_PROJECT: ${{ vars.WEAVE_PROJECT }}             # optional
-      WANDB_API_KEY: ${{ secrets.WANDB_API_KEY }}          # optional if auth needed
+      BASE_CMD: python3 -u script/exp_battery.py   # -u for live logs
+      CACHE_DIR: ${{ secrets.CACHE_DIR }}
+      OPENAI_API_TOKEN: ${{ secrets.OPENAI_API_TOKEN }}
+
+      # ---- Weave / W&B toggles (env-controlled) ----
+      WEAVE_ENABLED: ${{ vars.WEAVE_ENABLED || '1' }}   # set repo/env variable or leave default "1"
+      WEAVE_PROJECT: ${{ vars.WEAVE_PROJECT }}          # optional repo/env variable
+
+      WANDB_ENABLED: "1"                                # your HFModelWrapper auto-inits when this is "1"
+      WANDB_API_KEY: ${{ secrets.WANDB_API_KEY }}       # secret set in Environment
+      WANDB_PROJECT: ${{ vars.WANDB_PROJECT }}          # repo/env variable (or hardcode a name)
+      WANDB_ENTITY:  ${{ vars.WANDB_ENTITY }}           # repo/env variable (username or team)
+      WANDB_RUN_GROUP: ${{ github.workflow }}           # group all runs by workflow name
+      WANDB_RUN_ID: ${{ github.run_id }}                # stable per GH run
+      WANDB_MODE: "online"                              # online/offline/disabled
 
     steps:
       - name: Checkout
@@ -40,7 +51,8 @@ jobs:
         shell: bash -l {0}
         run: conda run -n "${CONDA_ENV}" python -V
 
-      - name: Install/verify weave
+      # --- Ensure weave is available ---
+      - name: Verify weave
         shell: bash -l {0}
         run: |
           set -e
@@ -58,9 +70,31 @@ jobs:
         shell: bash -l {0}
         run: |
           conda run -n "${CONDA_ENV}" pip install "weave>=0.50"
-          conda run -n "${CONDA_ENV}" python -c "import weave, sys; print('weave now:', weave.__version__)"
+          conda run -n "${CONDA_ENV}" python -c "import weave; print('weave now:', weave.__version__)"
 
-      - name: HF login (optional; skips if no token)
+      # --- Ensure wandb is available (for auto-init inside HFModelWrapper) ---
+      - name: Verify wandb
+        shell: bash -l {0}
+        run: |
+          set -e
+          conda run -n "${CONDA_ENV}" python - <<'PY'
+          try:
+              import wandb
+              print("wandb present:", wandb.__version__)
+          except Exception:
+              raise SystemExit(1)
+          PY
+        continue-on-error: true
+
+      - name: Install wandb (fallback)
+        if: ${{ failure() }}
+        shell: bash -l {0}
+        run: |
+          conda run -n "${CONDA_ENV}" pip install "wandb>=0.17"
+          conda run -n "${CONDA_ENV}" python -c "import wandb; print('wandb now:', wandb.__version__)"
+
+      # --- Optional HF login (uses token if provided) ---
+      - name: HF login (optional)
         shell: bash -l {0}
         env:
           HF_TOKEN: ${{ secrets.HF_TOKEN }}
@@ -71,12 +105,29 @@ jobs:
             echo "HF_TOKEN not provided; skipping HF login."
           fi
 
-      - name: Show Weave env (sanity)
+      # --- Optional W&B login (SDK will also pick up env var automatically) ---
+      - name: W&B login (optional)
+        shell: bash -l {0}
+        env:
+          WANDB_API_KEY: ${{ secrets.WANDB_API_KEY }}
+        run: |
+          if [ -n "${WANDB_API_KEY}" ]; then
+            conda run -n "${CONDA_ENV}" wandb login "${WANDB_API_KEY}"
+          else
+            echo "WANDB_API_KEY not provided; relying on existing login or public mode."
+          fi
+
+      # --- Sanity print of env toggles ---
+      - name: Show Weave/W&B env
         shell: bash -l {0}
         run: |
           echo "WEAVE_ENABLED=$WEAVE_ENABLED"
           echo "WEAVE_PROJECT=$WEAVE_PROJECT"
+          echo "WANDB_ENABLED=$WANDB_ENABLED"
+          echo "WANDB_PROJECT=$WANDB_PROJECT"
+          echo "WANDB_ENTITY=$WANDB_ENTITY"
 
+      # --- Run inference with live logs to Actions UI ---
       - name: Run inference (live logs)
         shell: bash -l {0}
         env:
