@@ -38,7 +38,7 @@ jobs:
         shell: bash -l {0}
         run: conda run -n "${CONDA_ENV}" python -V
 
-      - name: HF login (uses inherited environment secrets if present)
+      - name: HF login (uses environment secrets if present)
         if: ${{ secrets.HF_TOKEN != '' }}
         shell: bash -l {0}
         env:
@@ -59,6 +59,7 @@ jobs:
           else
             printf "%s\n" "${{ inputs.commands }}" > "$CMD_FILE"
           fi
+          # Normalize + strip blanks/comments
           sed -i 's/\r$//' "$CMD_FILE"
           awk 'BEGIN{FS=OFS=""} {gsub(/^[ \t]+|[ \t]+$/,""); if(length($0)>0 && $0!~"^#") print}' "$CMD_FILE" > "$CMD_FILE.cleaned"
           mv "$CMD_FILE.cleaned" "$CMD_FILE"
