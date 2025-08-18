@@ -65,8 +65,10 @@ def triplet_run_1_a(model_config, stimuli_key, **kwargs):
         tokenizer=model["tokenizer_name"],
         do_chat_template=model["do_chat_template"],
         model_load=model["model_load"],
-        cache_dir=os.getenv("CACHE_DIR")
+        cache_dir=os.getenv("CACHE_DIR"),
+        experiment_name=experiment_name,
     )
+
 
     things_stimuli = StimuliSet(
         stimuli["items_tsv"],
@@ -78,8 +80,10 @@ def triplet_run_1_a(model_config, stimuli_key, **kwargs):
         euclid_max=exp["euclid_max"]
     )
 
+    things_stimuli.get_stimuli_csv("stim_out.csv")#write CSV for debug
+
     things_df = things_stimuli.get_stimuli_df()
-    model_res_list = hf_model.do_model_batch_generation(
+    model_res_list, run_secs = hf_model.do_model_batch_generation(
         things_df["format_str"],
         max_new_tokens=25,
         instr_prompt=model["answer_format"],
@@ -88,7 +92,8 @@ def triplet_run_1_a(model_config, stimuli_key, **kwargs):
             things_df["item_y"],
             things_df["item_z"]
         ],
-        choose_mode=model["choose_mode"]
+        choose_mode=model["choose_mode"],
+        batch_size=exp["batch_size"]
     )
 
     # check for optional version_dir
@@ -105,6 +110,8 @@ def triplet_run_1_a(model_config, stimuli_key, **kwargs):
     # Save model output CSV
     pd.DataFrame(model_res_list).to_csv(output_csv, index=False)
     print(f"[INFO] Saved model triplet results to {output_csv}")
+    print(f"[INFO] Batch generation runtime: {run_secs:.2f}s")
+
 
 
 def embedding_1_a(model_config, stimuli_key, **kwargs):
