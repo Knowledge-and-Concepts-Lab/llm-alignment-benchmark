@@ -20,15 +20,32 @@ from sklearn.model_selection import train_test_split
 class SalmonEmbeddings:
 
     def __init__(self, csv_dir: str, config:dict, embeddings_dir: str):
+        """
+        Initialize the SalmonEmbeddings class.
+        
+        Args:
+            csv_dir: Path to the CSV file containing triplet data.
+            config: Configuration dictionary with parameters for embedding creation.
+            embeddings_dir: Directory where the resulting embeddings will be saved.
+        """
+        self.csv_dir = csv_dir
         self.embeddings_dir = embeddings_dir
         self.config = config
 
     
     def create_embeddings(self, csv_dir: str):
+        """
+        Create embeddings from triplet data in the specified CSV file.
+        
+        Args:
+            csv_dir: Path to the CSV file containing triplet data.
+        """
         max_expochs = self.config.get("max_epochs", 50000)
         d = self.config.get("d", 10)
 
         df = pd.read_csv(csv_dir)
+
+
         keys = pd.concat([df["head"], df["winner"], df["loser"]])
         keys = keys.dropna().astype(str)
         unique_items = sorted(set(keys) - set(["-1"]))
@@ -51,9 +68,11 @@ class SalmonEmbeddings:
         # Train/test split
         X_train, X_test = train_test_split(triplets, test_size=0.2, random_state=42)
 
+        print(X_train.shape, X_test.shape)
+
         # Fit the embedding
         n = len(unique_items)
-        model = OfflineEmbedding(n=n, d=d, max_epochs=max_expochs)
+        model = OfflineEmbedding(n=n, d=d, max_epochs=max_expochs, device="cuda")
         model.initialize(X_train)
         model.fit(X_train, X_test)
 

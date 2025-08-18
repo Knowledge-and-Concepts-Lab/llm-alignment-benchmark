@@ -16,11 +16,26 @@ from numpy.linalg import norm
 class StimuliSet:
 
     def __init__(self, src_tsv:str, src_key:str, format_prompt:str, n_items = 1000, ref_embeddings=None, euclid_min=-1, euclid_max=-1, subset_k: int = None):
+        """
+        Initialize the StimuliSet class.
+        
+        Args:
+            src_tsv: Path to the source TSV file containing stimuli data.
+            src_key: Column name in the TSV to use as unique item identifiers.
+            format_prompt: String template for formatting prompts.
+            n_items: Number of stimuli items to generate.
+            ref_embeddings: Path to reference embeddings file (optional).
+            euclid_min: Minimum Euclidean distance for sampling (optional).
+            euclid_max: Maximum Euclidean distance for sampling (optional).
+            subset_k: If specified, randomly sample k unique items from the source TSV.
+        Raises:
+            ValueError: If subset_k exceeds the number of unique items in the source TSV.
+        """
         
         self.src_tsv = src_tsv
         self.src_df = pd.read_csv(self.src_tsv, sep="\t")
 
-        if subset_k is not None: #optionally filter select only a subset of the original items. Note that this will result in a different integer-item word mapping and you will need to xref
+        if subset_k is not None:
             all_keys = self.src_df[self.src_key].astype(str).unique().tolist()
             if subset_k > len(all_keys):
                 raise ValueError(f"Requested subset_k={subset_k} exceeds available unique items ({len(all_keys)})")
@@ -31,25 +46,31 @@ class StimuliSet:
         self.src_key=src_key
 
         print(f"{self.src_tsv} successfully loaded as stimuli")
-
         self.ref_embeddings = self.__read_embeddings(ref_embeddings, self.src_df, self.src_key) if ref_embeddings is not None else None
-
         self.format_prompt = format_prompt
-
-        #create stimuli using reference embeddings constraints if defined
         self.stimuli = self.__construct_stimuli(n_items=n_items, ref_embeddings=self.ref_embeddings, euclid_min=euclid_min, euclid_max=euclid_max)
 
-        #get formatted prompts
         self.__interpolate_format_strings()
 
     def __construct_stimuli(self, n_items, ref_embeddings=None, euclid_min=-1, euclid_max=-1) -> list[dict]:
+        """
+        Construct a list of stimuli triplets based on the source DataFrame and reference embeddings.
+        Args:
+            n_items: Number of stimuli items to generate.
+            ref_embeddings: Reference embeddings dictionary for distance calculations (optional).
+            euclid_min: Minimum Euclidean distance for sampling (optional).
+            euclid_max: Maximum Euclidean distance for sampling (optional).
+        
+        Returns:
+            List of stimuli dictionaries with keys 'item_x', 'item_y', 'item_z', and their distances.
+        """
         
         stimuli = []
 
         keys = self.src_df[self.src_key].astype(str).tolist()
 
         attempts = 0
-        max_attempts = n_items * 100  # fail-safe to prevent infinite loops
+        max_attempts = n_items * 100  # fail-safe max iterations to prevent infinite loops
 
         while len(stimuli) < n_items and attempts < max_attempts:
             attempts += 1
@@ -140,9 +161,6 @@ class StimuliSet:
                 stim["format_str"] = ""
 
 
-
-        
-    
     def __read_embeddings(self, embeddings_path: str, items_df: pd.DataFrame, match_key: str) -> dict[str, np.ndarray]:
         """
         Reads a .txt embedding file where each row corresponds to an item and each column to a dimension.
@@ -164,7 +182,6 @@ class StimuliSet:
                 "embedding": matrix[i]
             })
 
-        # Deduplicate: keep first occurrence
         unique_dict = {}
         for obj in embedding_objects:
             item = obj["item"]
