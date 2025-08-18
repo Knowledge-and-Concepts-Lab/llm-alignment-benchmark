@@ -1,0 +1,21 @@
+name: Inference — sequence (by file)
+on:
+  workflow_dispatch:
+    inputs:
+      workflow_file:
+        description: "File in workflows/ with ARGS-ONLY lines (e.g., gemma.txt)"
+        required: true
+        default: "gemma.txt"
+      stop_on_error:
+        description: "Stop the sequence on first failure?"
+        required: true
+        type: boolean
+        default: true
+jobs:
+  call:
+    environment: alignment_benchmark_env
+    uses: ./.github/workflows/_sequence-inference.yml
+    secrets: inherit
+    with:
+      workflow_file: ${{ inputs.workflow_file }}
+      stop_on_error: ${{ inputs.stop_on_error }}

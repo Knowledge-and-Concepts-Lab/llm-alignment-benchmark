@@ -1,0 +1,95 @@
+name: _sequence-inference (reusable)
+
+on:
+  workflow_call:
+    inputs:
+      workflow_file:
+        description: "File under workflows/ with ARGS-ONLY lines (optional)"
+        required: false
+        type: string
+        default: ""
+      commands:
+        description: "Multiline ARGS-ONLY commands (used if file not provided)"
+        required: false
+        type: string
+        default: ""
+      stop_on_error:
+        description: "Stop the sequence on the first failure?"
+        required: false
+        type: boolean
+        default: true
+
+jobs:
+  run:
+    runs-on: [self-hosted, Linux, X64]
+    timeout-minutes: 2880
+    env:
+      CONDA_ENV: alignment_benchmark_env
+      BASE_CMD: python3 script/exp_battery.py
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          lfs: true
+
+      - name: Verify conda env exists
+        shell: bash -l {0}
+        run: conda run -n "${CONDA_ENV}" python -V
+
+      - name: HF login (uses inherited environment secrets if present)
+        if: ${{ secrets.HF_TOKEN != '' }}
+        shell: bash -l {0}
+        run: conda run -n "${CONDA_ENV}" huggingface-cli login --token "${{ secrets.HF_TOKEN }}"
+
+      - name: Prepare commands
+        id: prep
+        shell: bash -l {0}
+        run: |
+          set -euo pipefail
+          mkdir -p logs
+          CMD_FILE=".cmd-list.txt"
+          if [[ -n "${{ inputs.workflow_file }}" ]]; then
+            SRC="workflows/${{ inputs.workflow_file }}"
+            [[ -f "$SRC" ]] || { echo "Missing $SRC"; exit 1; }
+            cp "$SRC" "$CMD_FILE"
+          else
+            printf "%s\n" "${{ inputs.commands }}" > "$CMD_FILE"
+          fi
+          # Normalize + strip blanks/comments
+          sed -i 's/\r$//' "$CMD_FILE"
+          awk 'BEGIN{FS=OFS=""} {gsub(/^[ \t]+|[ \t]+$/,""); if(length($0)>0 && $0!~"^#") print}' "$CMD_FILE" > "$CMD_FILE.cleaned"
+          mv "$CMD_FILE.cleaned" "$CMD_FILE"
+          nl -ba "$CMD_FILE"
+
+      - name: Run sequence
+        shell: bash -l {0}
+        run: |
+          set -euo pipefail
+          CMD_FILE=".cmd-list.txt"
+          i=1
+          while IFS= read -r args || [[ -n "$args" ]]; do
+            args_trimmed="$(echo "$args" | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//')"
+            [[ -z "$args_trimmed" ]] && continue
+            log="logs/${i}.log"
+            echo ">>> [$i] ${BASE_CMD} ${args_trimmed} (log: ${log})"
+            set +e
+            conda run -n "${CONDA_ENV}" bash -lc "${BASE_CMD} ${args_trimmed}" > "${log}" 2>&1
+            rc=$?
+            set -e
+            echo "Exit code: $rc" | tee -a "${log}"
+            if [[ $rc -ne 0 && "${{ inputs.stop_on_error }}" == "true" ]]; then
+              echo "Stopping (step $i failed)."
+              exit $rc
+            fi
+            i=$((i+1))
+          done < "$CMD_FILE"
+
+      - name: Upload logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: sequence-logs-${{ github.run_id }}
+          path: logs/
+          if-no-files-found: warn
+          retention-days: 14

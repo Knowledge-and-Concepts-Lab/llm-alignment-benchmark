@@ -1,0 +1,28 @@
+name: Inference — sequence (inline)
+on:
+  workflow_dispatch:
+    inputs:
+      commands:
+        description: |-
+          Multiline ARGS-ONLY lines, e.g.:
+          triplet_run_1_a gemma-3-12b-it THINGS version_dir=1a
+          triplet_run_1_a gemma-3-9b-it THINGS version_dir=1a
+          triplet_run_1_a gemma-3-1b-it THINGS version_dir=1a
+        required: true
+        default: |
+          triplet_run_1_a gemma-3-12b-it THINGS version_dir=1a
+          triplet_run_1_a gemma-3-9b-it THINGS version_dir=1a
+          triplet_run_1_a gemma-3-1b-it THINGS version_dir=1a
+      stop_on_error:
+        description: "Stop the sequence on first failure?"
+        required: true
+        type: boolean
+        default: true
+jobs:
+  call:
+    environment: alignment_benchmark_env
+    uses: ./.github/workflows/_sequence-inference.yml
+    secrets: inherit
+    with:
+      commands: ${{ inputs.commands }}
+      stop_on_error: ${{ inputs.stop_on_error }}
