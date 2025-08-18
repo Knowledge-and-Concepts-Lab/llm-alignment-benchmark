@@ -88,3 +88,9 @@ experiment.sh
 _results_tmp_unpack/
 
 results/
+
+# Allow GitHub Actions workflows
+!.github/workflows/*.yml
+
+# --- allow checked-in dataset under data/spose ---
+!data/spose/**
