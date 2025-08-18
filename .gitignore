@@ -76,6 +76,8 @@ results/
 *.h5
 *.onnx
 
+.nfs000000020163196c000077f5
+
 # CHTC / job artifacts
 *.out
 *.err
