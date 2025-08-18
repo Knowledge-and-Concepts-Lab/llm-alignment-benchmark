@@ -10,8 +10,8 @@ on:
 
 jobs:
   run:
-    # Your self-hosted runner labels; add 'gpu' later if you label the runner
     runs-on: [self-hosted, Linux, X64]
+    environment: alignment_benchmark_env
     timeout-minutes: 1440
     env:
       CONDA_ENV: alignment_benchmark_env
