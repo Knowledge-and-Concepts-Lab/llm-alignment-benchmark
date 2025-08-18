@@ -59,4 +59,10 @@ R -q -e "IRkernel::installspec(name = 'r-${ENV_NAME}', displayname = 'R (${ENV_N
 echo "Logging in to Hugging Face with your token..."
 huggingface-cli login --token "$HF_TOKEN"
 
+echo "Installing salmon-triplets package..."
+pip install "salmon-triplets"
+
+echo "Verifying salmon-triplets installation..."
+python -c "from salmon.triplets.offline import OfflineEmbedding; print('OfflineEmbedding import successful')"
+
 echo "Setup complete. Environment '$ENV_NAME' is ready for Python and R notebooks."
