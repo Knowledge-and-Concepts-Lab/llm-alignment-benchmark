@@ -24,9 +24,9 @@ And you're ready to run experiments
 
 All main experiment code is in `exp_battery.py`. The parameters for all experiments are determined by three JSON files in config:
 
-**exp_battery.json**: experiment specific parameters, i.e number of embeddings dimensions, number of triplet items to run, and model instruction prompt.
-**model_battery.json**: huggingface model and tokenizer path and other parameters, such as whether the model is instruct tuned
-**stim_battery.json**: stimuli parameters, i.e column to access for concept strings, path for embeddings and items.
+- **exp_battery.json**: experiment specific parameters, i.e number of embeddings dimensions, number of triplet items to run, and model instruction prompt.
+- **model_battery.json**: huggingface model and tokenizer path and other parameters, such as whether the model is instruct tuned
+- **stim_battery.json**: stimuli parameters, i.e column to access for concept strings, path for embeddings and items.
 
 All experiments are run through exp_battery like so:
 
@@ -68,6 +68,7 @@ make workflow FILE=example_workflow.txt
 ```
 
 This will automatically run all of the experiments listed in the txt in order, on nohup (in background). logs will be exported to /logs. If one experiment in the chain fails, the others will still run.
+
 
 
 
