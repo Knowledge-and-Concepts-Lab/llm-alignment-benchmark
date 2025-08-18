@@ -1,0 +1,50 @@
+name: _single-inference (reusable)
+
+on:
+  workflow_call:
+    inputs:
+      args:
+        description: "Args appended to: python3 script/exp_battery.py"
+        required: true
+        type: string
+
+jobs:
+  run:
+    # Your self-hosted runner labels; add 'gpu' later if you label the runner
+    runs-on: [self-hosted, Linux, X64]
+    timeout-minutes: 1440
+    env:
+      CONDA_ENV: alignment_benchmark_env
+      BASE_CMD: python3 script/exp_battery.py
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          lfs: true
+
+      - name: Verify conda env exists
+        shell: bash -l {0}
+        run: conda run -n "${CONDA_ENV}" python -V
+
+      - name: HF login (uses inherited environment secrets if present)
+        if: ${{ secrets.HF_TOKEN != '' }}
+        shell: bash -l {0}
+        run: conda run -n "${CONDA_ENV}" huggingface-cli login --token "${{ secrets.HF_TOKEN }}"
+
+      - name: Run inference
+        shell: bash -l {0}
+        run: |
+          set -euo pipefail
+          mkdir -p logs
+          echo ">>> ${BASE_CMD} ${{ inputs.args }}"
+          conda run -n "${CONDA_ENV}" bash -lc "${BASE_CMD} ${{ inputs.args }}" 2>&1 | tee logs/run.log
+
+      - name: Upload logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: single-run-logs-${{ github.run_id }}
+          path: logs/
+          if-no-files-found: warn
+          retention-days: 14

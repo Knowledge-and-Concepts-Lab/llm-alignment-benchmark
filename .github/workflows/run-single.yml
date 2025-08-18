@@ -1,0 +1,17 @@
+name: Inference — single run
+on:
+  workflow_dispatch:
+    inputs:
+      args:
+        description: "Args only (e.g., triplet_run_1_a gemma-3-12b-it THINGS version_dir=1a)"
+        required: true
+        default: "triplet_run_1_a gemma-3-12b-it THINGS version_dir=1a"
+
+jobs:
+  call:
+    # Attach the job to your Environment so its secrets are available
+    environment: alignment_benchmark_env
+    uses: ./.github/workflows/_single-inference.yml
+    secrets: inherit
+    with:
+      args: ${{ inputs.args }}
