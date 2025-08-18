@@ -14,10 +14,55 @@ import math
 from typing import List, Tuple, Literal
 from utils.performance_utils import timeit
 
+
+
 import torch.nn.functional as F
 from transformers import AutoTokenizer, AutoModelForCausalLM, pipeline
 
 import utils.model_utils as model_utils
+
+# --- Weave wiring (optional, env-controlled) ---
+import os as _os
+from functools import wraps as _wraps
+
+try:
+    import weave as _weave
+except Exception:
+    _weave = None  # graceful fallback if weave isn't installed
+
+
+def _weave_enabled() -> bool:
+    return (_weave is not None) and (_os.getenv("WEAVE_ENABLED", "0") == "1")
+
+
+def _weave_init_if_needed():
+    if not _weave_enabled():
+        return
+    proj = _os.getenv("WEAVE_PROJECT")
+    try:
+        if proj:
+            _weave.init(project=proj)
+        else:
+            _weave.init()
+    except Exception as e:
+        print(f"[weave] init skipped: {e}")
+
+
+def _wrap_with_weave(op_name: str, fn):
+    """
+    Return a weave.op-wrapped callable if enabled, otherwise the original.
+    Keeps compatibility with instance methods (first arg = self).
+    """
+    if not _weave_enabled():
+        return fn
+
+    @_weave.op(name=op_name)
+    @_wraps(fn)
+    def _op(*args, **kwargs):
+        return fn(*args, **kwargs)
+
+    return _op
+
 
 
 class HFModelWrapper:
@@ -75,6 +120,10 @@ class HFModelWrapper:
         self.do_model_batch_generation = timeit(
             log_path=log_path, label="do_model_batch_generation"
         )(self.do_model_batch_generation)
+
+        _weave_init_if_needed()
+        self.do_model_generation = _wrap_with_weave("do_model_generation", self.do_model_generation)
+        self.do_model_batch_generation = _wrap_with_weave("do_model_batch_generation", self.do_model_batch_generation)
 
 
     def load_tokenizer(self, tokenizer_str):
@@ -418,9 +467,6 @@ class HFModelWrapper:
         return path
 
     def set_experiment_name(self, experiment_name: str) -> None:
-        """
-        Set experiment name for logging.
-        """
         self.experiment_name = experiment_name
         log_path = self._runtime_log_path()
         # re-wrap with new log path
@@ -430,6 +476,12 @@ class HFModelWrapper:
         self.do_model_batch_generation = timeit(
             log_path=log_path, label="do_model_batch_generation"
         )(self._unwrap(self.do_model_batch_generation))
+
+        # re-apply weave wrapping (if enabled)
+        _weave_init_if_needed()
+        self.do_model_generation = _wrap_with_weave("do_model_generation", self.do_model_generation)
+        self.do_model_batch_generation = _wrap_with_weave("do_model_batch_generation", self.do_model_batch_generation)
+
 
     @staticmethod
     def _unwrap(fn):

@@ -14,6 +14,8 @@ on:
         required: false
       CACHE_DIR:
         required: false
+      WANDB_API_KEY:     # needed if Weave/W&B requires auth
+        required: false
 
 jobs:
   run:
@@ -22,7 +24,11 @@ jobs:
     timeout-minutes: 1440
     env:
       CONDA_ENV: alignment_benchmark_env
-      BASE_CMD: python3 script/exp_battery.py
+      BASE_CMD: python3 -u script/exp_battery.py  # -u for live logs
+      # --- Weave/W&B toggles ---
+      WEAVE_ENABLED: ${{ vars.WEAVE_ENABLED || '1' }}      # or hardcode "1"
+      WEAVE_PROJECT: ${{ vars.WEAVE_PROJECT }}             # optional
+      WANDB_API_KEY: ${{ secrets.WANDB_API_KEY }}          # optional if auth needed
 
     steps:
       - name: Checkout
@@ -33,6 +39,26 @@ jobs:
       - name: Verify conda env exists
         shell: bash -l {0}
         run: conda run -n "${CONDA_ENV}" python -V
+
+      - name: Install/verify weave
+        shell: bash -l {0}
+        run: |
+          set -e
+          conda run -n "${CONDA_ENV}" python - <<'PY'
+          try:
+              import weave
+              print("weave present:", weave.__version__)
+          except Exception:
+              raise SystemExit(1)
+          PY
+        continue-on-error: true
+
+      - name: Install weave (fallback)
+        if: ${{ failure() }}
+        shell: bash -l {0}
+        run: |
+          conda run -n "${CONDA_ENV}" pip install "weave>=0.50"
+          conda run -n "${CONDA_ENV}" python -c "import weave, sys; print('weave now:', weave.__version__)"
 
       - name: HF login (optional; skips if no token)
         shell: bash -l {0}
@@ -45,13 +71,21 @@ jobs:
             echo "HF_TOKEN not provided; skipping HF login."
           fi
 
-      - name: Run inference
+      - name: Show Weave env (sanity)
         shell: bash -l {0}
+        run: |
+          echo "WEAVE_ENABLED=$WEAVE_ENABLED"
+          echo "WEAVE_PROJECT=$WEAVE_PROJECT"
+
+      - name: Run inference (live logs)
+        shell: bash -l {0}
+        env:
+          PYTHONUNBUFFERED: "1"
         run: |
           set -euo pipefail
           mkdir -p logs
           echo ">>> ${BASE_CMD} ${{ inputs.args }}"
-          conda run -n "${CONDA_ENV}" bash -lc "${BASE_CMD} ${{ inputs.args }}" 2>&1 | tee logs/run.log
+          stdbuf -oL -eL conda run -n "${CONDA_ENV}" bash -lc "${BASE_CMD} ${{ inputs.args }}" | tee logs/run.log
 
       - name: Upload logs
         if: always()
