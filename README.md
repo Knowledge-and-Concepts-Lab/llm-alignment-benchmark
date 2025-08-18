@@ -53,7 +53,24 @@ You will be prompted to authenticate your CHTC login, and then the project tarba
 
 #### Workflows
 
-In many cases you will want to use makefiles in `/workflows`. 
+In many cases you will want to run a sequence of many model inference experiments. To do this, specify a sequence of exp_battery cmdline args in a txt in `/workflows`. Example:
+
+```txt
+triplet_run_1_a gemma-3-12b-it THINGS version_dir=1a
+triplet_run_1_a gemma-3-9b-it THINGS version_dir=1a
+triplet_run_1_a gemma-3-1b-it THINGS version_dir=1a
+```
+
+Then, run (as an example):
+
+```bash
+make workflow FILE=example_workflow.txt
+```
+
+This will automatically run all of the experiments listed in the txt in order, on nohup (in background). logs will be exported to /logs. If one experiment in the chain fails, the others will still run.
+
+
+
 
 
 
