@@ -24,4 +24,3 @@ def clean_model_response_match(generation_str: str, match_strs: list) -> str:
     # Return the match string with the smallest index
     return min(filtered.items(), key=lambda x: x[1])[0]
 
-    

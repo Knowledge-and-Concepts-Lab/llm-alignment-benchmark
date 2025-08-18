@@ -1,9 +1,10 @@
 {
     "triplet_run_1_a":{
         "instruct_prompt": "You are a helpful assistant who gives responses to questions. QUESTION: Which item is most similar to {item_x}: {item_y} or {item_z}? Respond only with the item name. ",
-        "n_items": 2000,
-        "euclid_min": 2.5,
-        "euclid_max": 3.5
+        "n_items": 1200000,
+        "euclid_min": -100000000000,
+        "euclid_max": 100000000000,
+        "batch_size": 4
     },
     "embedding_1_a": {
         "d": 10,

@@ -76,6 +76,10 @@ results/
 *.h5
 *.onnx
 
+.nfs000000020163196c000077f5
+
+./results/
+
 # CHTC / job artifacts
 *.out
 *.err
@@ -83,3 +87,4 @@ results/
 experiment.sh
 _results_tmp_unpack/
 
+results/
