@@ -1,8 +1,15 @@
 name: Inference — single run
 
+# 👇 This is what shows in the Actions run list
+run-name: Inference — ${{ inputs.model }} ${{ inputs.args }}
+
 on:
   workflow_dispatch:
     inputs:
+      model:
+        description: "Model name (e.g., gemma-3-12b-it). Optional — leave blank if you don't care."
+        required: false
+        default: ""
       args:
         description: "Args only (e.g., triplet_run_1_a gemma-3-12b-it THINGS version_dir=1a)"
         required: true
