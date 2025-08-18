@@ -30,7 +30,9 @@ jobs:
       - name: HF login (uses inherited environment secrets if present)
         if: ${{ secrets.HF_TOKEN != '' }}
         shell: bash -l {0}
-        run: conda run -n "${CONDA_ENV}" huggingface-cli login --token "${{ secrets.HF_TOKEN }}"
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+        run: conda run -n "${CONDA_ENV}" huggingface-cli login --token "$HF_TOKEN"
 
       - name: Run inference
         shell: bash -l {0}
