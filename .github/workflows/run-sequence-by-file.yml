@@ -1,4 +1,5 @@
 name: Inference — sequence (by file)
+
 on:
   workflow_dispatch:
     inputs:
@@ -11,9 +12,9 @@ on:
         required: true
         type: boolean
         default: true
+
 jobs:
   call:
-    environment: alignment_benchmark_env
     uses: ./.github/workflows/_sequence-inference.yml
     secrets: inherit
     with:

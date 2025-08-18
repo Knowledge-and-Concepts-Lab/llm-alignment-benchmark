@@ -1,4 +1,5 @@
 name: Inference — single run
+
 on:
   workflow_dispatch:
     inputs:
@@ -9,8 +10,6 @@ on:
 
 jobs:
   call:
-    # Attach the job to your Environment so its secrets are available
-    environment: alignment_benchmark_env
     uses: ./.github/workflows/_single-inference.yml
     secrets: inherit
     with:
