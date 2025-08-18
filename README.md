@@ -8,7 +8,8 @@ Start by running `setup_env.sh`:
 ./setup_env.sh
 ```
 
-You will then be prompted for a huggingface token and an OpenAI token. OpenAI token is unnecessary for most experiments, but you will need a huggingface token for inference.
+You will then be prompted for a huggingface token and an OpenAI token. OpenAI token is unnecessary for most experiments, but you will need a huggingface token for inference.\n
+You will also be prompted for a CACHE_DIR env variable. If you have limited directory space you should set this to an external dir. (**If you are in K+C lab this applies to you**)
 The bash script will automatically install conda/pip dependencies and create an env `alignment_benchmark_env`
 
 run:
@@ -39,6 +40,23 @@ i.e to run the main triplet experiment on a gemma model for all THINGS stimuli:
 ```
 python3 script/exp_battery.py triplet_run_1_a gemma-3-12b-it THINGS version_dir=1a
 ```
+
+#### CHTC
+
+If you have a CHTC account you can run experiments remotely:
+
+```
+./chtc_deploy.sh <CHTC_USERNAME> <experiment_name> <model_config_name> <stimuli_key> <HF_VAR_NAME>
+```
+
+You will be prompted to authenticate your CHTC login, and then the project tarball will be transferred to CHTC and automatically run on a GPU once available.
+
+#### Workflows
+
+In many cases you will want to use makefiles in `/workflows`. 
+
+
+
 
 
 
