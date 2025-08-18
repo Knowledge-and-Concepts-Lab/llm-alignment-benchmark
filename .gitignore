@@ -78,6 +78,8 @@ results/
 
 .nfs000000020163196c000077f5
 
+./results/
+
 # CHTC / job artifacts
 *.out
 *.err
