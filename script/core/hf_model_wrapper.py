@@ -35,6 +35,7 @@ def _weave_enabled() -> bool:
     return (_weave is not None) and (_os.getenv("WEAVE_ENABLED", "0") == "1")
 
 
+
 def _weave_init_if_needed():
     if not _weave_enabled():
         return
@@ -63,6 +64,38 @@ def _wrap_with_weave(op_name: str, fn):
 
     return _op
 
+# ---- Optional W&B auto-init (env-controlled) ----
+import os as _os
+import atexit as _atexit
+try:
+    import wandb as _wandb
+except Exception:
+    _wandb = None
+
+def _wandb_enabled() -> bool:
+    # default ON; disable by setting WANDB_ENABLED=0
+    return (_wandb is not None) and (_os.getenv("WANDB_ENABLED", "1") == "1")
+
+def _wandb_auto_init(run_name: str, **config):
+    if not _wandb_enabled():
+        return
+    try:
+        # Only init if not already active (e.g., started elsewhere)
+        if _wandb.run is None:
+            _wandb.init(
+                project=_os.getenv("WANDB_PROJECT", "llm-alignment-inference"),
+                entity=_os.getenv("WANDB_ENTITY") or None,
+                name=run_name,
+                id=_os.getenv("WANDB_RUN_ID"),
+                group=_os.getenv("WANDB_RUN_GROUP"),
+                resume="allow",
+                mode=_os.getenv("WANDB_MODE", "online"),
+                config=config or None,
+            )
+            # Ensure we close cleanly on process exit
+            _atexit.register(lambda: (_wandb.run and _wandb.finish()))
+    except Exception as e:
+        print(f"[wandb] auto-init skipped: {e}")
 
 
 class HFModelWrapper:
@@ -124,6 +157,16 @@ class HFModelWrapper:
         _weave_init_if_needed()
         self.do_model_generation = _wrap_with_weave("do_model_generation", self.do_model_generation)
         self.do_model_batch_generation = _wrap_with_weave("do_model_batch_generation", self.do_model_batch_generation)
+
+        # Auto-start a W&B run so Weave has a run context too (if WANDB_ENABLED=1)
+        _wandb_auto_init(
+            run_name=f"{self.experiment_name} | {self.model_name}",
+            model_name=self.model_name,
+            experiment=self.experiment_name,
+            model_load=self.model_load,
+            do_chat_template=self.do_chat_template,
+        )
+
 
 
     def load_tokenizer(self, tokenizer_str):
