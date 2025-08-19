@@ -12,6 +12,7 @@ import torch
 import pandas as pd
 from random import choice, sample
 from numpy.linalg import norm
+from random import shuffle, choice
 
 class StimuliSet:
 
@@ -33,7 +34,7 @@ class StimuliSet:
         """
         
         self.src_tsv = src_tsv
-        self.src_df = pd.read_csv(self.src_tsv, sep="\t")
+        self.src_df = pd.read_csv(self.src_tsv, sep=",")
 
         if subset_k is not None:
             all_keys = self.src_df[self.src_key].astype(str).unique().tolist()
@@ -52,32 +53,22 @@ class StimuliSet:
 
         self.__interpolate_format_strings()
 
+
     def __construct_stimuli(self, n_items, ref_embeddings=None, euclid_min=-1, euclid_max=-1) -> list[dict]:
         """
         Construct a list of stimuli triplets based on the source DataFrame and reference embeddings.
-        Args:
-            n_items: Number of stimuli items to generate.
-            ref_embeddings: Reference embeddings dictionary for distance calculations (optional).
-            euclid_min: Minimum Euclidean distance for sampling (optional).
-            euclid_max: Maximum Euclidean distance for sampling (optional).
-        
-        Returns:
-            List of stimuli dictionaries with keys 'item_x', 'item_y', 'item_z', and their distances.
         """
-        
         stimuli = []
-
         keys = self.src_df[self.src_key].astype(str).tolist()
 
         attempts = 0
-        max_attempts = n_items * 100  # fail-safe max iterations to prevent infinite loops
+        max_attempts = n_items * 100
 
         while len(stimuli) < n_items and attempts < max_attempts:
             attempts += 1
             item_x = choice(keys)
 
             if ref_embeddings is None:
-                # If no embedding constraints, just sample two other items normally
                 rest = [k for k in keys if k != item_x]
                 item_y, item_z = sample(rest, 2)
                 dist_xy = dist_xz = dist_yz = None
@@ -86,29 +77,32 @@ class StimuliSet:
                 if x_vec is None:
                     continue
 
-                # Candidates for y (close) and z (far)
-                possible_y = []
-                possible_z = []
+                # shuffle order once, then greedily choose first valid y and z
+                shuffled = keys[:]
+                shuffle(shuffled)
 
-                for other in keys:
+                item_y, dist_xy = None, None
+                item_z, dist_xz = None, None
+
+                for other in shuffled:
                     if other == item_x:
                         continue
                     vec = ref_embeddings.get(other)
                     if vec is None:
                         continue
                     dist = norm(x_vec - vec)
-                    if dist < euclid_min:
-                        possible_y.append((other, dist))
-                    elif dist > euclid_max:
-                        possible_z.append((other, dist))
+                    if item_y is None and dist < euclid_min:
+                        item_y, dist_xy = other, dist
+                    elif item_z is None and dist > euclid_max:
+                        item_z, dist_xz = other, dist
 
-                if not possible_y or not possible_z:
-                    continue  # try again with a different x
+                    # once we have both, break
+                    if item_y and item_z:
+                        break
 
-                item_y, dist_xy = choice(possible_y)
-                item_z, dist_xz = choice(possible_z)
+                if not (item_y and item_z):
+                    continue  # didn’t find both, retry
 
-                # Optional: compute dist_yz if needed
                 y_vec = ref_embeddings[item_y]
                 z_vec = ref_embeddings[item_z]
                 dist_yz = norm(y_vec - z_vec)
@@ -126,8 +120,8 @@ class StimuliSet:
             print(f"[WARN] Max attempts reached. Collected {len(stimuli)} valid triplets.")
 
         print(f"Constructed {len(stimuli)} stimuli")
-        print(stimuli)
         return stimuli
+
 
 
 
@@ -172,8 +166,10 @@ class StimuliSet:
 
         if matrix.shape[0] != len(items_df):
             print(f"[WARN] Matrix row count ({matrix.shape[0]}) does not match items_df ({len(items_df)})")
+        print(items_df.columns)
 
         keys = items_df[match_key].astype(str).tolist()
+
 
         embedding_objects = []
         for i in range(min(len(matrix), len(keys))):

@@ -13,7 +13,7 @@ import torch
 import math
 from typing import List, Tuple, Literal
 from utils.performance_utils import timeit
-
+import wandb
 
 
 import torch.nn.functional as F
@@ -147,12 +147,12 @@ class HFModelWrapper:
         # ------ runtime logging setup ---------
         log_path = self._runtime_log_path()
 
-        self.do_model_generation = timeit(
-            log_path=log_path, label="do_model_generation"
-        )(self.do_model_generation)
-        self.do_model_batch_generation = timeit(
-            log_path=log_path, label="do_model_batch_generation"
-        )(self.do_model_batch_generation)
+        # self.do_model_generation = timeit(
+        #     log_path=log_path, label="do_model_generation"
+        # )(self.do_model_generation)
+        # self.do_model_batch_generation = timeit(
+        #     log_path=log_path, label="do_model_batch_generation"
+        # )(self.do_model_batch_generation)
 
         _weave_init_if_needed()
         self.do_model_generation = _wrap_with_weave("do_model_generation", self.do_model_generation)
@@ -316,6 +316,7 @@ class HFModelWrapper:
 
         def run_batch(batch_idx: List[int]):
             print(f"BATCH IDX {batch_idx}")
+            wandb.log({"batch_idx": batch_idx})
             batch_prompts_raw = [prompt_list[i] for i in batch_idx]
             batch_heads = [x[i] for i in batch_idx]
             batch_y = [y[i] for i in batch_idx]
