@@ -26,7 +26,8 @@
         "tokenizer_name": "google/gemma-3-12b-it",
         "do_chat_template": true,
         "model_load": "direct",
-        "answer_format": null
+        "answer_format": null,
+        "choose_mode": "tokens"
     },
     "gemma-3-27b-pt":{
         "model_name": "google/gemma-3-27b-pt",

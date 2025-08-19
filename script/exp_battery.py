@@ -83,7 +83,7 @@ def triplet_run_1_a(model_config, stimuli_key, **kwargs):
     things_stimuli.get_stimuli_csv("stim_out.csv")#write CSV for debug
 
     things_df = things_stimuli.get_stimuli_df()
-    model_res_list, run_secs = hf_model.do_model_batch_generation(
+    model_res_list = hf_model.do_model_batch_generation(
         things_df["format_str"],
         max_new_tokens=25,
         instr_prompt=model["answer_format"],
@@ -110,7 +110,6 @@ def triplet_run_1_a(model_config, stimuli_key, **kwargs):
     # Save model output CSV
     pd.DataFrame(model_res_list).to_csv(output_csv, index=False)
     print(f"[INFO] Saved model triplet results to {output_csv}")
-    print(f"[INFO] Batch generation runtime: {run_secs:.2f}s")
 
 
 

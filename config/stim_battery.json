@@ -1,7 +1,7 @@
 {
     "THINGS":{
-        "items_tsv": "data/spose/items1854names.tsv",
+        "items_tsv": "data/spose/neurips_DB_human_clean.csv",
         "human_embeddings": "data/spose/spose_human_49d.txt",
-        "src_key": "Word"
+        "src_key": "concept"
     }
 }

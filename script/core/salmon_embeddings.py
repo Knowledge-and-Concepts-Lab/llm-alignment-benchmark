@@ -72,9 +72,11 @@ class SalmonEmbeddings:
 
         # Fit the embedding
         n = len(unique_items)
-        model = OfflineEmbedding(n=n, d=d, max_epochs=max_expochs, device="cuda")
+        model = OfflineEmbedding(n=n, d=d, max_epochs=max_expochs, verbose=1)
         model.initialize(X_train)
-        model.fit(X_train, X_test)
+        model.fit(X_train, X_test, verbose=1)
+
+        print("we made it")
 
         # Join embedding with labels
         embedding = model.embedding_
