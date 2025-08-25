@@ -62,9 +62,11 @@ class SalmonEmbeddings:
                 continue  # skip rows with missing keys
 
         triplets = np.array(triplets)
+
+        print(triplets)
         if len(triplets) == 0:
             raise ValueError("No valid triplets could be constructed from the data.")
-
+        
         # Train/test split
         X_train, X_test = train_test_split(triplets, test_size=0.2, random_state=42)
 
@@ -72,6 +74,8 @@ class SalmonEmbeddings:
 
         # Fit the embedding
         n = len(unique_items)
+        print("this is n:", n)
+
         model = OfflineEmbedding(n=n, d=d, max_epochs=max_expochs, verbose=1)
         model.initialize(X_train)
         model.fit(X_train, X_test, verbose=1)
