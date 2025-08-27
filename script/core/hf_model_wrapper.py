@@ -8,6 +8,7 @@ import gc
 import requests
 import os
 import sys
+import time
 import json
 import torch
 import math
@@ -352,12 +353,24 @@ class HFModelWrapper:
                 pad_to_multiple_of=pad_to_multiple_of,
             )
             toks = {k: v.to(device) for k, v in toks.items()}
+            
+            
             out_ids = self.model.generate(**toks, max_new_tokens=max_new_tokens)
             decoded = self.tokenizer.batch_decode(out_ids, skip_special_tokens=True)
-            cleaned = [
-                t[len(p):].strip() if t.startswith(p) else t.strip()
-                for t, p in zip(decoded, texts)
-            ]
+
+            cleaned = []
+            for i in range(len(decoded)):
+                text_words = texts[i].split()
+                decoded_i = decoded[i]
+                
+                for word in reversed(text_words):
+                    if word in decoded_i:
+                        last_idx = decoded_i.rfind(word)
+                        end_idx = last_idx + len(word)
+                        cleaned.append(decoded_i[end_idx:].strip())
+                        break
+
+
             for j, res_text in enumerate(cleaned):
                 chosen = model_utils.clean_model_response_match(
                     res_text, [batch_y[j], batch_z[j]]
@@ -368,6 +381,7 @@ class HFModelWrapper:
                     winner, loser = batch_z[j], batch_y[j]
                 else:
                     winner = loser = None
+
                 results[batch_idx[j]] = {
                     "head": batch_heads[j],
                     "winner": winner,

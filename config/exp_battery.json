@@ -1,14 +1,14 @@
 {
     "triplet_run_1_a":{
         "instruct_prompt": "You are a helpful assistant who gives responses to questions. QUESTION: Which item is most similar to {item_x}: {item_y} or {item_z}? Respond only with the item name. ",
-        "n_items": 30000,
+        "n_items": 35000,
         "euclid_min": 10000000000,
         "euclid_max": 0,
         "batch_size": 4
     },
     "embedding_1_a": {
-        "d": 5,
-        "max_epochs": 50000,
+        "d": 30,
+        "max_epochs": 1000,
         "embeddings_name": "1a_salmon_embeddings"
   }
 }
