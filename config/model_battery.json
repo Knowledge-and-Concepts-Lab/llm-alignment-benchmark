@@ -1,47 +1,216 @@
 {
-    "gemma-3-1b-it": {
-        "model_name": "google/gemma-3-1b-it",
-        "tokenizer_name": "google/gemma-3-1b-it",
-        "do_chat_template": true,
-        "model_load": "direct",
-        "answer_format": null,
-        "choose_mode": "tokens"
-    },
-    "gemma-3-1b-pt":{
-        "model_name": "google/gemma-3-1b-pt",
-        "tokenizer_name": "google/gemma-3-1b-pt",
-        "do_chat_template": false,
-        "model_load": "direct",
-        "answer_format": "Answer: "
-    },
-    "gemma-3-12b-pt":{
-        "model_name": "google/gemma-3-12b-pt",
-        "tokenizer_name": "google/gemma-3-12b-pt",
-        "do_chat_template": false,
-        "model_load": "direct",
-        "answer_format": "Answer: "
-    },
-    "gemma-3-12b-it":{
-        "model_name": "google/gemma-3-12b-it",
-        "tokenizer_name": "google/gemma-3-12b-it",
-        "do_chat_template": true,
-        "model_load": "direct",
-        "answer_format": null,
-        "choose_mode": "tokens"
-    },
-    "gemma-3-27b-pt":{
-        "model_name": "google/gemma-3-27b-pt",
-        "tokenizer_name": "google/gemma-3-12b-pt",
-        "do_chat_template": false,
-        "model_load": "direct",
-        "answer_format": "Answer: "
-    },
-    "internlm-7b":{
-        "model_name": "internlm/internlm-7b",
-        "tokenizer_name": "internlm/internlm-7b",
-        "do_chat_template": false,
-        "model_load": "direct",
-        "answer_format": "Answer: "
-    }
+  "gemma-3-4b-it": {
+    "model_name": "google/gemma-3-4b-it",
+    "tokenizer_name": "google/gemma-3-4b-it",
+    "do_chat_template": true,
+    "model_load": "direct",
+    "answer_format": null,
+    "choose_mode": "tokens"
+  },
+  "gemma-3-4b-pt": {
+    "model_name": "google/gemma-3-4b-pt",
+    "tokenizer_name": "google/gemma-3-4b-pt",
+    "do_chat_template": false,
+    "model_load": "direct",
+    "answer_format": "Answer: "
+  },
+  "gemma-3-12b-it": {
+    "model_name": "google/gemma-3-12b-it",
+    "tokenizer_name": "google/gemma-3-12b-it",
+    "do_chat_template": true,
+    "model_load": "direct",
+    "answer_format": null,
+    "choose_mode": "tokens"
+  },
+  "gemma-3-12b-pt": {
+    "model_name": "google/gemma-3-12b-pt",
+    "tokenizer_name": "google/gemma-3-12b-pt",
+    "do_chat_template": false,
+    "model_load": "direct",
+    "answer_format": "Answer: "
+  },
+  "gemma-2-2b": {
+    "model_name": "google/gemma-2-2b",
+    "tokenizer_name": "google/gemma-2-2b",
+    "do_chat_template": false,
+    "model_load": "direct",
+    "answer_format": "Answer: "
+  },
+  "gemma-2-2b-it": {
+    "model_name": "google/gemma-2-2b-it",
+    "tokenizer_name": "google/gemma-2-2b-it",
+    "do_chat_template": true,
+    "model_load": "direct",
+    "answer_format": null,
+    "choose_mode": "tokens"
+  },
+  "gemma-2-9b": {
+    "model_name": "google/gemma-2-9b",
+    "tokenizer_name": "google/gemma-2-9b",
+    "do_chat_template": false,
+    "model_load": "direct",
+    "answer_format": "Answer: "
+  },
+  "gemma-2-9b-it": {
+    "model_name": "google/gemma-2-9b-it",
+    "tokenizer_name": "google/gemma-2-9b-it",
+    "do_chat_template": true,
+    "model_load": "direct",
+    "answer_format": null,
+    "choose_mode": "tokens"
+  },
+  "gemma-2-27b": {
+    "model_name": "google/gemma-2-27b",
+    "tokenizer_name": "google/gemma-2-27b",
+    "do_chat_template": false,
+    "model_load": "direct",
+    "answer_format": "Answer: "
+  },
+  "gemma-2-27b-it": {
+    "model_name": "google/gemma-2-27b-it",
+    "tokenizer_name": "google/gemma-2-27b-it",
+    "do_chat_template": true,
+    "model_load": "direct",
+    "answer_format": null,
+    "choose_mode": "tokens"
+  },
 
+  "llama2-7b": {
+    "model_name": "meta-llama/Llama-2-7b-hf",
+    "tokenizer_name": "meta-llama/Llama-2-7b-hf",
+    "do_chat_template": false,
+    "model_load": "direct",
+    "answer_format": "Answer: "
+  },
+  "llama2-7b-chat": {
+    "model_name": "meta-llama/Llama-2-7b-chat-hf",
+    "tokenizer_name": "meta-llama/Llama-2-7b-chat-hf",
+    "do_chat_template": true,
+    "model_load": "direct",
+    "answer_format": null,
+    "choose_mode": "tokens"
+  },
+  "llama2-13b": {
+    "model_name": "meta-llama/Llama-2-13b-hf",
+    "tokenizer_name": "meta-llama/Llama-2-13b-hf",
+    "do_chat_template": false,
+    "model_load": "direct",
+    "answer_format": "Answer: "
+  },
+  "llama2-13b-chat": {
+    "model_name": "meta-llama/Llama-2-13b-chat-hf",
+    "tokenizer_name": "meta-llama/Llama-2-13b-chat-hf",
+    "do_chat_template": true,
+    "model_load": "direct",
+    "answer_format": null,
+    "choose_mode": "tokens"
+  },
+
+  "qwen-7b": {
+    "model_name": "Qwen/Qwen-7B",
+    "tokenizer_name": "Qwen/Qwen-7B",
+    "do_chat_template": false,
+    "model_load": "direct",
+    "answer_format": "Answer: "
+  },
+  "qwen-7b-chat": {
+    "model_name": "Qwen/Qwen-7B-Chat",
+    "tokenizer_name": "Qwen/Qwen-7B-Chat",
+    "do_chat_template": true,
+    "model_load": "direct",
+    "answer_format": null,
+    "choose_mode": "tokens"
+  },
+  "qwen-14b": {
+    "model_name": "Qwen/Qwen-14B",
+    "tokenizer_name": "Qwen/Qwen-14B",
+    "do_chat_template": false,
+    "model_load": "direct",
+    "answer_format": "Answer: "
+  },
+  "qwen-14b-chat": {
+    "model_name": "Qwen/Qwen-14B-Chat",
+    "tokenizer_name": "Qwen/Qwen-14B-Chat",
+    "do_chat_template": true,
+    "model_load": "direct",
+    "answer_format": null,
+    "choose_mode": "tokens"
+  },
+
+  "qwen2-7b": {
+    "model_name": "Qwen/Qwen2-7B",
+    "tokenizer_name": "Qwen/Qwen2-7B",
+    "do_chat_template": false,
+    "model_load": "direct",
+    "answer_format": "Answer: "
+  },
+  "qwen2-7b-instruct": {
+    "model_name": "Qwen/Qwen2-7B-Instruct",
+    "tokenizer_name": "Qwen/Qwen2-7B-Instruct",
+    "do_chat_template": true,
+    "model_load": "direct",
+    "answer_format": null,
+    "choose_mode": "tokens"
+  },
+
+  "qwen25-7b": {
+    "model_name": "Qwen/Qwen2.5-7B",
+    "tokenizer_name": "Qwen/Qwen2.5-7B",
+    "do_chat_template": false,
+    "model_load": "direct",
+    "answer_format": "Answer: "
+  },
+  "qwen25-7b-instruct": {
+    "model_name": "Qwen/Qwen2.5-7B-Instruct",
+    "tokenizer_name": "Qwen/Qwen2.5-7B-Instruct",
+    "do_chat_template": true,
+    "model_load": "direct",
+    "answer_format": null,
+    "choose_mode": "tokens"
+  },
+  "qwen25-14b": {
+    "model_name": "Qwen/Qwen2.5-14B",
+    "tokenizer_name": "Qwen/Qwen2.5-14B",
+    "do_chat_template": false,
+    "model_load": "direct",
+    "answer_format": "Answer: "
+  },
+  "qwen25-14b-instruct": {
+    "model_name": "Qwen/Qwen2.5-14B-Instruct",
+    "tokenizer_name": "Qwen/Qwen2.5-14B-Instruct",
+    "do_chat_template": true,
+    "model_load": "direct",
+    "answer_format": null,
+    "choose_mode": "tokens"
+  },
+
+  "qwen3-4b": {
+    "model_name": "Qwen/Qwen3-4B",
+    "tokenizer_name": "Qwen/Qwen3-4B",
+    "do_chat_template": false,
+    "model_load": "direct",
+    "answer_format": "Answer: "
+  },
+  "qwen3-4b-instruct": {
+    "model_name": "Qwen/Qwen3-4B-Instruct-2507",
+    "tokenizer_name": "Qwen/Qwen3-4B-Instruct-2507",
+    "do_chat_template": true,
+    "model_load": "direct",
+    "answer_format": null,
+    "choose_mode": "tokens"
+  },
+  "qwen3-8b": {
+    "model_name": "Qwen/Qwen3-8B",
+    "tokenizer_name": "Qwen/Qwen3-8B",
+    "do_chat_template": false,
+    "model_load": "direct",
+    "answer_format": "Answer: "
+  },
+  "qwen3-14b": {
+    "model_name": "Qwen/Qwen3-14B",
+    "tokenizer_name": "Qwen/Qwen3-14B",
+    "do_chat_template": false,
+    "model_load": "direct",
+    "answer_format": "Answer: "
+  }
 }
