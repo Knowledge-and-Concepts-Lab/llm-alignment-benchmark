@@ -65,6 +65,7 @@ class StimuliSet:
         max_attempts = n_items * 100
 
         while len(stimuli) < n_items and attempts < max_attempts:
+            print(len(stimuli))
             attempts += 1
             item_x = choice(keys)
 
