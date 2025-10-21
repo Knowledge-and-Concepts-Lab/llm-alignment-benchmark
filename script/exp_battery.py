@@ -5,8 +5,6 @@ from torch import Tensor, nn
 from torch.distributions.categorical import Categorical
 from torch.nn import functional as F
 from tqdm.auto import tqdm
-from transformer_lens import ActivationCache, HookedTransformer, utils
-from transformer_lens.hook_points import HookPoint
 from tqdm import tqdm
 import numpy as np
 import pandas as pd
@@ -35,7 +33,6 @@ from core.hf_model_wrapper import HFModelWrapper
 from core.stimuli_set import StimuliSet
 import utils.embeddings_utils as embeddings_utils 
 from core.salmon_embeddings import SalmonEmbeddings
-
 from core.salmon_embeddings import SalmonEmbeddings
 
 
@@ -65,8 +62,9 @@ def triplet_run_1_a(model_config, stimuli_key, **kwargs):
         tokenizer=model["tokenizer_name"],
         do_chat_template=model["do_chat_template"],
         model_load=model["model_load"],
-        cache_dir=os.getenv("CACHE_DIR"),
-        experiment_name=experiment_name,
+        cache_dir="/mnt/dv/wid/projects3/Rogers-muri-human-ai/zstuddiford/",
+        experiment_name=experiment_name
+        #quantization="4bit"
     )
 
 
@@ -97,16 +95,18 @@ def triplet_run_1_a(model_config, stimuli_key, **kwargs):
         batch_size=exp["batch_size"]
     )
 
-    # check for optional version_dir
-    version_dir = kwargs.get("version_dir", None)
-    if version_dir:
-        embed_out_dir = os.path.join("results", version_dir, "embed_in", model_config)
-        os.makedirs(embed_out_dir, exist_ok=True)
-        os.makedirs(embed_out_dir, exist_ok=True)
-        output_csv = os.path.join(embed_out_dir, f"model_triplet_output_{model_config}_{stimuli_key}.csv")
+    #TODO: revert back
+    # # check for optional version_dir
+    # version_dir = kwargs.get("version_dir", None)
+    # if version_dir:
+    #     embed_out_dir = os.path.join("results", version_dir, "embed_in", model_config)
+    #     os.makedirs(embed_out_dir, exist_ok=True)
+    #     os.makedirs(embed_out_dir, exist_ok=True)
+    #     output_csv = os.path.join(embed_out_dir, f"model_triplet_output_{model_config}_{stimuli_key}.csv")
 
-    else:
-        output_csv = f"model_triplet_output_{model_config}_{stimuli_key}.csv"
+    # else:
+    #     output_csv = f"model_triplet_output_{model_config}_{stimuli_key}.csv"
+    output_csv = f"../model_triplet_output_{model_config}_{stimuli_key}.csv"
 
     # Save model output CSV
     pd.DataFrame(model_res_list).to_csv(output_csv, index=False)
@@ -142,11 +142,58 @@ def embedding_1_a(model_config, stimuli_key, **kwargs):
     
     embeddings_model.create_embeddings(triplets_dir)
 
-    
+
+
+def embedding_from_folder(model_config: str, stimuli_key: str, **kwargs):
+    """
+    Process all triplet CSVs in a given folder into embeddings.
+
+    Args:
+        model_config: Model config name (used for labeling).
+        stimuli_key: Not used here but kept for compatibility.
+        kwargs: Must include 'version_dir' = path to folder with triplet CSVs.
+    """
+    global experiment_name
+
+    embeddings_params = EXP_JSON[experiment_name]
+
+    version_dir = kwargs.get("version_dir", None)
+    if version_dir is None:
+        raise ValueError("embedding_from_folder requires a 'version_dir' argument")
+
+    input_dir = version_dir
+    if not os.path.isdir(input_dir):
+        raise ValueError(f"Input directory not found: {input_dir}")
+
+    # Create output folder with _embed appended
+    output_dir = input_dir.rstrip("/\\") + "_embed"
+    os.makedirs(output_dir, exist_ok=True)
+
+    # Loop over all CSVs
+    for fname in os.listdir(input_dir):
+        if not fname.endswith(".csv"):
+            continue
+
+        triplet_path = os.path.join(input_dir, fname)
+        base_name = os.path.splitext(fname)[0]
+        results_path = os.path.join(output_dir, f"{base_name}_embedding.csv")
+
+        print(f"[INFO] Processing {triplet_path} -> {results_path}")
+
+        embeddings_model = SalmonEmbeddings(
+            csv_dir=triplet_path,
+            config=embeddings_params,
+            embeddings_dir=results_path,
+        )
+        embeddings_model.create_embeddings(triplet_path)
+
+    print(f"[INFO] Finished all embeddings. Output folder: {output_dir}")
+
 
 EXPERIMENTS = {
     "triplet_run_1_a": triplet_run_1_a,
-    "embedding_1_a": embedding_1_a
+    "embedding_1_a": embedding_1_a,
+    "embedding_from_folder": embedding_from_folder
 }
 
 ###CMDLINE ARGS####

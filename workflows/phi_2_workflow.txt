@@ -1,0 +1,4 @@
+triplet_run_1_a phi-3-mini-128k-instruct THINGS version_dir=1a
+triplet_run_1_a phi-3-medium-128k-instruct THINGS version_dir=1a
+triplet_run_1_a phi-3-small-128k-instruct THINGS version_dir=1a
+

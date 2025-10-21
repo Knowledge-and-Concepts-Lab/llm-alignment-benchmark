@@ -1,0 +1,5 @@
+triplet_run_1_a phi-4-mini-flash-reasoning THINGS version_dir=1a
+triplet_run_1_a phi-4-mini-reasoning THINGS version_dir=1a
+triplet_run_1_a phi-4-reasoning-plus THINGS version_dir=1a
+triplet_run_1_a phi-4-multimodal-instruct THINGS version_dir=1a
+triplet_run_1_a phi-4-mini-instruct THINGS version_dir=1a

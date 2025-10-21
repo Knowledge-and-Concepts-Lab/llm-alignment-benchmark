@@ -1,0 +1,5 @@
+triplet_run_1_a orca-2-7b THINGS version_dir=1a
+
+
+
+

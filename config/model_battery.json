@@ -5,14 +5,17 @@
     "do_chat_template": true,
     "model_load": "direct",
     "answer_format": null,
-    "choose_mode": "tokens"
+    "choose_mode": "tokens",
+    "params": "4B"
   },
   "gemma-3-4b-pt": {
     "model_name": "google/gemma-3-4b-pt",
     "tokenizer_name": "google/gemma-3-4b-pt",
     "do_chat_template": false,
     "model_load": "direct",
-    "answer_format": "Answer: "
+    "answer_format": "Answer: ",
+    "choose_mode": "tokens",
+    "params": "4B"
   },
   "gemma-3-12b-it": {
     "model_name": "google/gemma-3-12b-it",
@@ -20,21 +23,26 @@
     "do_chat_template": true,
     "model_load": "direct",
     "answer_format": null,
-    "choose_mode": "tokens"
+    "choose_mode": "tokens",
+    "params": "12B"
   },
   "gemma-3-12b-pt": {
     "model_name": "google/gemma-3-12b-pt",
     "tokenizer_name": "google/gemma-3-12b-pt",
     "do_chat_template": false,
     "model_load": "direct",
-    "answer_format": "Answer: "
+    "answer_format": "Answer: ",
+    "choose_mode": "tokens",
+    "params": "12B"
   },
   "gemma-2-2b": {
     "model_name": "google/gemma-2-2b",
     "tokenizer_name": "google/gemma-2-2b",
     "do_chat_template": false,
     "model_load": "direct",
-    "answer_format": "Answer: "
+    "answer_format": "Answer: ",
+    "choose_mode": "tokens",
+    "params": "2B"
   },
   "gemma-2-2b-it": {
     "model_name": "google/gemma-2-2b-it",
@@ -42,14 +50,17 @@
     "do_chat_template": true,
     "model_load": "direct",
     "answer_format": null,
-    "choose_mode": "tokens"
+    "choose_mode": "tokens",
+    "params": "2B"
   },
   "gemma-2-9b": {
     "model_name": "google/gemma-2-9b",
     "tokenizer_name": "google/gemma-2-9b",
     "do_chat_template": false,
     "model_load": "direct",
-    "answer_format": "Answer: "
+    "answer_format": "Answer: ",
+    "choose_mode": "tokens",
+    "params": "9B"
   },
   "gemma-2-9b-it": {
     "model_name": "google/gemma-2-9b-it",
@@ -57,14 +68,26 @@
     "do_chat_template": true,
     "model_load": "direct",
     "answer_format": null,
-    "choose_mode": "tokens"
+    "choose_mode": "tokens",
+    "params": "9B"
+  },
+  "gemma-3-270m": {
+    "model_name": "google/gemma-3-270m",
+    "tokenizer_name": "google/gemma-3-270m",
+    "do_chat_template": false,
+    "model_load": "direct",
+    "answer_format": "Answer: ",
+    "choose_mode": "tokens",
+    "params": "270M"
   },
   "gemma-2-27b": {
     "model_name": "google/gemma-2-27b",
     "tokenizer_name": "google/gemma-2-27b",
     "do_chat_template": false,
     "model_load": "direct",
-    "answer_format": "Answer: "
+    "answer_format": "Answer: ",
+    "choose_mode": "tokens",
+    "params": "27B"
   },
   "gemma-2-27b-it": {
     "model_name": "google/gemma-2-27b-it",
@@ -72,15 +95,35 @@
     "do_chat_template": true,
     "model_load": "direct",
     "answer_format": null,
-    "choose_mode": "tokens"
+    "choose_mode": "tokens",
+    "params": "27B"
   },
-
+  "gemma-3-27b-it": {
+    "model_name": "google/gemma-3-27b-it",
+    "tokenizer_name": "google/gemma-3-27b-it",
+    "do_chat_template": true,
+    "model_load": "direct",
+    "answer_format": null,
+    "choose_mode": "tokens",
+    "params": "27B"
+  },
+  "gemma-3-27b-pt": {
+    "model_name": "google/gemma-3-27b-pt",
+    "tokenizer_name": "google/gemma-3-27b-pt",
+    "do_chat_template": false,
+    "model_load": "direct",
+    "answer_format": "Answer: ",
+    "choose_mode": "tokens",
+    "params": "27B"
+  },
   "llama2-7b": {
     "model_name": "meta-llama/Llama-2-7b-hf",
     "tokenizer_name": "meta-llama/Llama-2-7b-hf",
     "do_chat_template": false,
     "model_load": "direct",
-    "answer_format": "Answer: "
+    "answer_format": "Answer: ",
+    "choose_mode": "tokens",
+    "params": "7B"
   },
   "llama2-7b-chat": {
     "model_name": "meta-llama/Llama-2-7b-chat-hf",
@@ -88,14 +131,17 @@
     "do_chat_template": true,
     "model_load": "direct",
     "answer_format": null,
-    "choose_mode": "tokens"
+    "choose_mode": "tokens",
+    "params": "7B"
   },
   "llama2-13b": {
     "model_name": "meta-llama/Llama-2-13b-hf",
     "tokenizer_name": "meta-llama/Llama-2-13b-hf",
     "do_chat_template": false,
     "model_load": "direct",
-    "answer_format": "Answer: "
+    "answer_format": "Answer: ",
+    "choose_mode": "tokens",
+    "params": "13B"
   },
   "llama2-13b-chat": {
     "model_name": "meta-llama/Llama-2-13b-chat-hf",
@@ -103,7 +149,8 @@
     "do_chat_template": true,
     "model_load": "direct",
     "answer_format": null,
-    "choose_mode": "tokens"
+    "choose_mode": "tokens",
+    "params": "13B"
   },
 
   "qwen-7b": {
@@ -111,7 +158,9 @@
     "tokenizer_name": "Qwen/Qwen-7B",
     "do_chat_template": false,
     "model_load": "direct",
-    "answer_format": "Answer: "
+    "answer_format": "Answer: ",
+    "choose_mode": "tokens",
+    "params": "7B"
   },
   "qwen-7b-chat": {
     "model_name": "Qwen/Qwen-7B-Chat",
@@ -119,14 +168,17 @@
     "do_chat_template": true,
     "model_load": "direct",
     "answer_format": null,
-    "choose_mode": "tokens"
+    "choose_mode": "tokens",
+    "params": "7B"
   },
   "qwen-14b": {
     "model_name": "Qwen/Qwen-14B",
     "tokenizer_name": "Qwen/Qwen-14B",
     "do_chat_template": false,
     "model_load": "direct",
-    "answer_format": "Answer: "
+    "answer_format": "Answer: ",
+    "choose_mode": "tokens",
+    "params": "14B"
   },
   "qwen-14b-chat": {
     "model_name": "Qwen/Qwen-14B-Chat",
@@ -134,7 +186,8 @@
     "do_chat_template": true,
     "model_load": "direct",
     "answer_format": null,
-    "choose_mode": "tokens"
+    "choose_mode": "tokens",
+    "params": "14B"
   },
 
   "qwen2-7b": {
@@ -142,7 +195,9 @@
     "tokenizer_name": "Qwen/Qwen2-7B",
     "do_chat_template": false,
     "model_load": "direct",
-    "answer_format": "Answer: "
+    "answer_format": "Answer: ",
+    "choose_mode": "tokens",
+    "params": "7B"
   },
   "qwen2-7b-instruct": {
     "model_name": "Qwen/Qwen2-7B-Instruct",
@@ -150,7 +205,8 @@
     "do_chat_template": true,
     "model_load": "direct",
     "answer_format": null,
-    "choose_mode": "tokens"
+    "choose_mode": "tokens",
+    "params": "7B"
   },
 
   "qwen25-7b": {
@@ -158,7 +214,9 @@
     "tokenizer_name": "Qwen/Qwen2.5-7B",
     "do_chat_template": false,
     "model_load": "direct",
-    "answer_format": "Answer: "
+    "answer_format": "Answer: ",
+    "choose_mode": "tokens",
+    "params": "7B"
   },
   "qwen25-7b-instruct": {
     "model_name": "Qwen/Qwen2.5-7B-Instruct",
@@ -166,14 +224,17 @@
     "do_chat_template": true,
     "model_load": "direct",
     "answer_format": null,
-    "choose_mode": "tokens"
+    "choose_mode": "tokens",
+    "params": "7B"
   },
   "qwen25-14b": {
     "model_name": "Qwen/Qwen2.5-14B",
     "tokenizer_name": "Qwen/Qwen2.5-14B",
     "do_chat_template": false,
     "model_load": "direct",
-    "answer_format": "Answer: "
+    "answer_format": "Answer: ",
+    "choose_mode": "tokens",
+    "params": "14B"
   },
   "qwen25-14b-instruct": {
     "model_name": "Qwen/Qwen2.5-14B-Instruct",
@@ -181,7 +242,8 @@
     "do_chat_template": true,
     "model_load": "direct",
     "answer_format": null,
-    "choose_mode": "tokens"
+    "choose_mode": "tokens",
+    "params": "14B"
   },
 
   "qwen3-4b": {
@@ -189,7 +251,9 @@
     "tokenizer_name": "Qwen/Qwen3-4B",
     "do_chat_template": false,
     "model_load": "direct",
-    "answer_format": "Answer: "
+    "answer_format": "Answer: ",
+    "choose_mode": "tokens",
+    "params": "4B"
   },
   "qwen3-4b-instruct": {
     "model_name": "Qwen/Qwen3-4B-Instruct-2507",
@@ -197,20 +261,784 @@
     "do_chat_template": true,
     "model_load": "direct",
     "answer_format": null,
-    "choose_mode": "tokens"
+    "choose_mode": "tokens",
+    "params": "4B"
   },
   "qwen3-8b": {
     "model_name": "Qwen/Qwen3-8B",
     "tokenizer_name": "Qwen/Qwen3-8B",
     "do_chat_template": false,
     "model_load": "direct",
-    "answer_format": "Answer: "
+    "answer_format": "Answer: ",
+    "choose_mode": "tokens",
+    "params": "8B"
   },
   "qwen3-14b": {
     "model_name": "Qwen/Qwen3-14B",
     "tokenizer_name": "Qwen/Qwen3-14B",
     "do_chat_template": false,
     "model_load": "direct",
-    "answer_format": "Answer: "
+    "answer_format": "Answer: ",
+    "choose_mode": "tokens",
+    "params": "14B"
+  },
+  "phi-4-mini-flash-reasoning":{
+    "model_name": "microsoft/Phi-4-mini-flash-reasoning",
+    "tokenizer_name": "microsoft/Phi-4-mini-flash-reasoning",
+    "do_chat_template": true,
+    "model_load": "direct",
+    "answer_format": "Answer: ",
+    "choose_mode": "tokens",
+    "params": "3.3B"
+  },
+
+  "phi-4-mini-reasoning":{
+    "model_name": "microsoft/Phi-4-mini-reasoning",
+    "tokenizer_name": "microsoft/Phi-4-mini-reasoning",
+    "do_chat_template": true,
+    "model_load": "direct",
+    "answer_format": "Answer: ",
+    "choose_mode": "tokens",
+    "params": "3.3B"
+  },
+  "phi-4-reasoning-plus":{
+    "model_name": "microsoft/Phi-4-reasoning-plus",
+    "tokenizer_name": "microsoft/Phi-4-reasoning-plus",
+    "do_chat_template": true,
+    "model_load": "direct",
+    "answer_format": "Answer: ",
+    "choose_mode": "tokens",
+    "params": "3.3B"
+  },
+  "phi-4-multimodal-instruct":{
+    "model_name": "microsoft/Phi-4-multimodal-instruct",
+    "tokenizer_name": "microsoft/Phi-4-multimodal-instruct",
+    "do_chat_template": true,
+    "model_load": "direct",
+    "answer_format": "Answer: ",
+    "choose_mode": "tokens",
+    "params": "3.3B"
+  },
+  "phi-4-mini-instruct":{
+    "model_name": "microsoft/Phi-4-mini-instruct",
+    "tokenizer_name": "microsoft/Phi-4-multimodal-instruct",
+    "do_chat_template": true,
+    "model_load": "direct",
+    "answer_format": "Answer: ",
+    "choose_mode": "tokens",
+    "params": "3.3B"
+  },
+  "phi-3-mini-128k-instruct":{
+    "model_name": "microsoft/Phi-3-mini-128k-instruct",
+    "tokenizer_name": "microsoft/Phi-3-mini-128k-instruct",
+    "do_chat_template": true,
+    "model_load": "direct",
+    "answer_format": "Answer: ",
+    "choose_mode": "tokens",
+    "params": "3.82B"
+  },
+  "phi-3-medium-128k-instruct":{
+    "model_name": "microsoft/Phi-3-medium-128k-instruct",
+    "tokenizer_name": "microsoft/Phi-3-medium-128k-instruct",
+    "do_chat_template": true,
+    "model_load": "direct",
+    "answer_format": "Answer: ",
+    "choose_mode": "tokens",
+    "params": "14B"
+  },
+  "phi-3-small-128k-instruct":{
+    "model_name": "microsoft/Phi-3-small-128k-instruct",
+    "tokenizer_name": "microsoft/Phi-3-small-128k-instruct",
+    "do_chat_template": true,
+    "model_load": "direct",
+    "answer_format": "Answer: ",
+    "choose_mode": "tokens",
+    "params": "7.8B"
+  },
+  "falcon-7b-instruct":{
+    "model_name": "tiiuae/falcon-7b-instruct",
+    "tokenizer_name": "tiiuae/falcon-7b-instruct",
+    "do_chat_template": true,
+    "model_load": "direct",
+    "answer_format": "Answer: ",
+    "choose_mode": "tokens",
+    "params": "7.8B"
+  },
+  "falcon-7b":{
+    "model_name": "tiiuae/falcon-7b",
+    "tokenizer_name": "tiiuae/falcon-7b",
+    "do_chat_template": true,
+    "model_load": "direct",
+    "answer_format": "Answer: ",
+    "choose_mode": "tokens",
+    "params": "7.8B"
+  },
+  
+  "orca-2-7b":{
+    "model_name": "microsoft/Orca-2-7b",
+    "tokenizer_name": "microsoft/Orca-2-7b",
+    "do_chat_template": false,
+    "model_load": "direct",
+    "answer_format": "Answer: ",
+    "choose_mode": "tokens",
+    "params": "7B"
+  },
+  "orca-2-13b":{
+    "model_name": "microsoft/Orca-2-13b",
+    "tokenizer_name": "microsoft/Orca-2-13b",
+    "do_chat_template": false,
+    "model_load": "direct",
+    "answer_format": "Answer: ",
+    "choose_mode": "tokens",
+    "params": "13B"
+  },
+  "falcon-11b":{
+    "model_name": "tiiuae/falcon-11b",
+    "tokenizer_name": "tiiuae/falcon-11b",
+    "do_chat_template": false,
+    "model_load": "direct",
+    "answer_format": "Answer: ",
+    "choose_mode": "tokens",
+    "params": "11B"
+  },
+  "falcon-11B-vlm":{
+    "model_name": "tiiuae/falcon-11B-vlm",
+    "tokenizer_name": "tiiuae/falcon-11B-vlm",
+    "do_chat_template": false,
+    "model_load": "direct",
+    "answer_format": "Answer: ",
+    "choose_mode": "tokens",
+    "params": "11B"
+  },
+  "DeepSeek-R1-Distill-Qwen-7B":{
+    "model_name": "deepseek-ai/DeepSeek-R1-Distill-Qwen-7B",
+    "tokenizer_name": "deepseek-ai/DeepSeek-R1-Distill-Qwen-7B",
+    "do_chat_template": true,
+    "model_load": "direct",
+    "answer_format": "",
+    "choose_mode": "tokens",
+    "params": "7B"
+  },
+  "DeepSeek-R1-Distill-Llama-8B":{
+    "model_name": "deepseek-ai/DeepSeek-R1-Distill-Llama-8B",
+    "tokenizer_name": "deepseek-ai/DeepSeek-R1-Distill-Llama-8B",
+    "do_chat_template": true,
+    "model_load": "direct",
+    "answer_format": "",
+    "choose_mode": "tokens",
+    "params": "8B"
+  },
+  "DeepSeek-R1-Distill-Qwen-14B":{
+    "model_name": "deepseek-ai/DeepSeek-R1-Distill-Qwen-14B",
+    "tokenizer_name": "deepseek-ai/DeepSeek-R1-Distill-Qwen-14B",
+    "do_chat_template": true,
+    "model_load": "direct",
+    "answer_format": "",
+    "choose_mode": "tokens",
+    "params": "14B" 
+  },
+  "OLMo-2-0425-1B":{
+    "model_name": "allenai/OLMo-2-0425-1B",
+    "tokenizer_name": "allenai/OLMo-2-0425-1B",
+    "do_chat_template": false,
+    "model_load": "direct",
+    "answer_format": "Answer: ",
+    "choose_mode": "tokens",
+    "params": "1B"
+  },
+  "OLMo-2-1124-13B-Instruct":{
+    "model_name": "allenai/OLMo-2-1124-13B-Instruct",
+    "tokenizer_name": "allenai/OLMo-2-1124-13B-Instruct",
+    "do_chat_template": true,
+    "model_load": "direct",
+    "answer_format": "Answer: ",
+    "choose_mode": "tokens",
+    "params": "1B"
+  },
+  "OLMo-2-1124-13B-SFT":{
+    "model_name": "allenai/OLMo-2-1124-13B-SFT",
+    "tokenizer_name": "allenai/OLMo-2-1124-13B-SFT",
+    "do_chat_template": true,
+    "model_load": "direct",
+    "answer_format": "Answer: ",
+    "choose_mode": "tokens",
+    "params": "1B"
+  },
+  "OLMo-2-1124-13B-DPO":{
+    "model_name": "allenai/OLMo-2-1124-13B-DPO",
+    "tokenizer_name": "allenai/OLMo-2-1124-13B-DPO",
+    "do_chat_template": true,
+    "model_load": "direct",
+    "answer_format": "Answer: ",
+    "choose_mode": "tokens",
+    "params": "1B"
+  },
+  "OLMo-2-1124-13B":{
+    "model_name": "allenai/OLMo-2-1124-13B",
+    "tokenizer_name": "allenai/OLMo-2-1124-13B",
+    "do_chat_template": false,
+    "model_load": "direct",
+    "answer_format": "Answer: ",
+    "choose_mode": "tokens",
+    "params": "1B"
+  },
+  "OLMo-2-1124-7B-Instruct":{
+    "model_name": "allenai/OLMo-2-1124-7B-Instruct",
+    "tokenizer_name": "allenai/OLMo-2-1124-7B-Instruct",
+    "do_chat_template": false,
+    "model_load": "direct",
+    "answer_format": "Answer: ",
+    "choose_mode": "tokens",
+    "params": "1B"
+  },
+  
+  "Falcon3-3B-Base":{
+    "model_name": "tiiuae/Falcon3-3B-Base",
+    "tokenizer_name": "tiiuae/Falcon3-3B-Base",
+    "do_chat_template": false,
+    "model_load": "direct",
+    "answer_format": "Answer: ",
+    "choose_mode": "tokens",
+    "params": "1B"
+  },
+  "Falcon3-7B-Base":{
+    "model_name": "tiiuae/Falcon3-7B-Base",
+    "tokenizer_name": "tiiuae/Falcon3-7B-Base",
+    "do_chat_template": false,
+    "model_load": "direct",
+    "answer_format": "Answer: ",
+    "choose_mode": "tokens",
+    "params": "1B"
+  },
+  "Falcon3-10B-Base":{
+    "model_name": "tiiuae/Falcon3-10B-Base",
+    "tokenizer_name": "tiiuae/Falcon3-10B-Base",
+    "do_chat_template": false,
+    "model_load": "direct",
+    "answer_format": "Answer: ",
+    "choose_mode": "tokens",
+    "params": "1B"
+  },
+  "Phi-3-medium-4k-instruct":{
+    "model_name": "microsoft/Phi-3-medium-4k-instruct",
+    "tokenizer_name": "microsoft/Phi-3-medium-4k-instruct",
+    "do_chat_template": true,
+    "model_load": "direct",
+    "answer_format": "Answer: ",
+    "choose_mode": "tokens",
+    "params": "14B"
+  },
+  "Phi-3.5-vision-instruct":{
+    "model_name": "microsoft/Phi-3.5-vision-instruct",
+    "tokenizer_name": "microsoft/Phi-3.5-vision-instruct",
+    "do_chat_template": true,
+    "model_load": "direct",
+    "answer_format": "Answer: ",
+    "choose_mode": "tokens",
+    "params": "3.5B"
+  },
+  "Phi-3.5-mini-instruct":{
+    "model_name": "microsoft/Phi-3.5-mini-instruct",
+    "tokenizer_name": "microsoft/Phi-3.5-mini-instruct",
+    "do_chat_template": true,
+    "model_load": "direct",
+    "answer_format": "Answer: ",
+    "choose_mode": "tokens",
+    "params": "3.5B"
+  },
+  "Phi-3-vision-128k-instruct":{
+    "model_name": "microsoft/Phi-3-vision-128k-instruct",
+    "tokenizer_name": "microsoft/Phi-3-vision-128k-instruct",
+    "do_chat_template": true,
+    "model_load": "direct",
+    "answer_format": "Answer: ",
+    "choose_mode": "tokens",
+    "params": "14B"
+  },
+  "OLMo-2-1124-7B":{
+    "model_name": "allenai/OLMo-2-1124-7B",
+    "tokenizer_name": "allenai/OLMo-2-1124-7B",
+    "do_chat_template": false,
+    "model_load": "direct",
+    "answer_format": "Answer: ",
+    "choose_mode": "tokens",
+    "params": "1B"
+  },
+  "Qwen1.5-MoE-A2.7B":{
+    "model_name": "Qwen/Qwen1.5-MoE-A2.7B",
+    "tokenizer_name": "Qwen/Qwen1.5-MoE-A2.7B",
+    "do_chat_template": true,
+    "model_load": "direct",
+    "answer_format": "Answer: ",
+    "choose_mode": "tokens",
+    "params": "1B"
+  },
+  "MolmoE-1B-0924":{
+    "model_name": "allenai/MolmoE-1B-0924",
+    "tokenizer_name": "allenai/MolmoE-1B-0924",
+    "do_chat_template": true,
+    "model_load": "direct",
+    "answer_format": "Answer: ",
+    "choose_mode": "tokens",
+    "params": "1B"
+  },
+
+
+  "Phi-3.5-MoE-instruct":{
+    "model_name": "microsoft/Phi-3.5-MoE-instruct",
+    "tokenizer_name": "microsoft/Phi-3.5-MoE-instruct",
+    "do_chat_template": true,
+    "model_load": "direct",
+    "answer_format": "Answer: ",
+    "choose_mode": "tokens",
+    "params": "3.5B"
+
+  },
+  "Yi-9B":{
+    "model_name": "01-ai/Yi-9B",
+    "tokenizer_name": "01-ai/Yi-9B",
+    "do_chat_template": true,
+    "model_load": "direct",
+    "answer_format": "Answer: ",
+    "choose_mode": "tokens",
+    "params": "9B"
+  },
+  "Yi-6B":{
+    "model_name": "01-ai/Yi-6B",
+    "tokenizer_name": "01-ai/Yi-6B",
+    "do_chat_template": true,
+    "model_load": "direct",
+    "answer_format": "Answer: ",
+    "choose_mode": "tokens",
+    "params": "6B"
+  },
+  "Phi-3-small-8k-instruct":{
+    "model_name": "microsoft/Phi-3-small-8k-instruct",
+    "tokenizer_name": "microsoft/Phi-3-small-8k-instruct",
+    "do_chat_template": true,
+    "model_load": "direct",
+    "answer_format": "Answer: ",
+    "choose_mode": "tokens",
+    "params": "7.8B"
+  },
+  "phi-1_5":{
+    "model_name": "microsoft/phi-1_5",
+    "tokenizer_name": "microsoft/phi-1_5",
+    "do_chat_template": true,
+    "model_load": "direct",
+    "answer_format": "Answer: ",
+    "choose_mode": "tokens",
+    "params": "1.5B"
+  },
+  "OLMo-2-0425-1B-DPO":{
+    "model_name": "allenai/OLMo-2-0425-1B-DPO",
+    "tokenizer_name": "allenai/OLMo-2-0425-1B-DPO",
+    "do_chat_template": false,
+    "model_load": "direct",
+    "answer_format": "Answer: ",
+    "choose_mode": "tokens",
+    "params": "1B"
+  },
+  "OLMo-2-1124-7B-DPO":{
+    "model_name": "allenai/OLMo-2-1124-7B-DPO",
+    "tokenizer_name": "allenai/OLMo-2-1124-7B-DPO",
+    "do_chat_template": true,
+    "model_load": "direct",
+    "answer_format": "Answer: ",
+    "choose_mode": "tokens",
+    "params": "1B"
+  },
+  "OLMo-2-1124-7B-SFT":{
+    "model_name": "allenai/OLMo-2-1124-7B-SFT",
+    "tokenizer_name": "allenai/OLMo-2-1124-7B-SFT",
+    "do_chat_template": true,
+    "model_load": "direct",
+    "answer_format": "Answer: ",
+    "choose_mode": "tokens",
+    "params": "7B"
+  },
+  "gpt-oss-20b":{
+    "model_name": "openai/gpt-oss-20b",
+    "tokenizer_name": "openai/gpt-oss-20b",
+    "do_chat_template": true,
+    "model_load": "direct",
+    "answer_format": "Answer: ",
+    "choose_mode": "tokens",
+    "params": "20B"
+  },
+  "OLMo-2-0425-1B-SFT":{
+    "model_name": "allenai/OLMo-2-0425-1B-SFT",
+    "tokenizer_name": "allenai/OLMo-2-0425-1B-SFT",
+    "do_chat_template": true,
+    "model_load": "direct",
+    "answer_format": "Answer: ",
+    "choose_mode": "tokens",
+    "params": "7B"
+  },
+  "gpt-j-6b":{
+    "model_name": "EleutherAI/gpt-j-6b",
+    "tokenizer_name": "EleutherAI/gpt-j-6b",
+    "do_chat_template": true,
+    "model_load": "direct",
+    "answer_format": "Answer: ",
+    "choose_mode": "tokens",
+    "params": "6B"
+  },
+  "llava-v1.6-34b":{
+    "model_name": "liuhaotian/llava-v1.6-34b",
+    "tokenizer_name": "liuhaotian/llava-v1.6-34b",
+    "do_chat_template": true,
+    "model_load": "direct",
+    "answer_format": "Answer: ",
+    "choose_mode": "tokens",
+    "params": "34B"
+  },
+  "OLMo-2-0325-32B-Instruct":{
+    "model_name": "allenai/OLMo-2-0325-32B-Instruct",
+    "tokenizer_name": "allenai/OLMo-2-0325-32B-Instruct",
+    "do_chat_template": true,
+    "model_load": "direct",
+    "answer_format": "Answer: ",
+    "choose_mode": "tokens",
+    "params": "32B"
+  },
+  "OLMo-2-0325-32B":{
+    "model_name": "allenai/OLMo-2-0325-32B",
+    "tokenizer_name": "allenai/OLMo-2-0325-32B",
+    "do_chat_template": false,
+    "model_load": "direct",
+    "answer_format": "Answer: ",
+    "choose_mode": "tokens",
+    "params": "32B" 
+  },
+  "Instella-3B":{
+    "model_name": "amd/Instella-3B",
+    "tokenizer_name": "amd/Instella-3B",
+    "do_chat_template": true,
+    "model_load": "direct",
+    "answer_format": "Answer: ",
+    "choose_mode": "tokens",
+    "params": "3B"
+  },
+  "Instella-3B-Stage1":{
+    "model_name": "amd/Instella-3B-Stage1",
+    "tokenizer_name": "amd/Instella-3B-Stage1",
+    "do_chat_template": true,
+    "model_load": "direct",
+    "answer_format": "Answer: ",
+    "choose_mode": "tokens",
+    "params": "3B"
+  },
+  "Instella-3B-Instruct":{
+    "model_name": "amd/Instella-3B-Instruct",
+    "tokenizer_name": "amd/Instella-3B-Instruct",
+    "do_chat_template": true,
+    "model_load": "direct",
+    "answer_format": "Answer: ",
+    "choose_mode": "tokens",
+    "params": "3B"
+  },
+  "Instella-3B-SFT":{
+    "model_name": "amd/Instella-3B-SFT",
+    "tokenizer_name": "amd/Instella-3B-SFT",
+    "do_chat_template": true,
+    "model_load": "direct",
+    "answer_format": "Answer: ",
+    "choose_mode": "tokens",
+    "params": "3B"
+  },
+  "AMD-OLMo-1B":{
+    "model_name": "amd/AMD-OLMo-1B",
+    "tokenizer_name": "amd/AMD-OLMo-1B",
+    "do_chat_template": true,
+    "model_load": "direct",
+    "answer_format": "Answer: ",
+    "choose_mode": "tokens",
+    "params": "3B"
+  },
+  "AMD-OLMo-1B-SFT":{
+    "model_name": "amd/AMD-OLMo-1B-SFT",
+    "tokenizer_name": "amd/AMD-OLMo-1B-SFT",
+    "do_chat_template": true,
+    "model_load": "direct",
+    "answer_format": "Answer: ",
+    "choose_mode": "tokens",
+    "params": "3B"
+  },
+  "AMD-OLMo-1B-SFT-DPO":{
+    "model_name": "amd/AMD-OLMo-1B-SFT-DPO",
+    "tokenizer_name": "amd/AMD-OLMo-1B-SFT-DPO",
+    "do_chat_template": true,
+    "model_load": "direct",
+    "answer_format": "Answer: ",
+    "choose_mode": "tokens",
+    "params": "3B"
+  },
+  "mpt-30b-instruct":{
+    "model_name": "mosaicml/mpt-30b-instruct",
+    "tokenizer_name": "mosaicml/mpt-30b-instruct",
+    "do_chat_template": true,
+    "model_load": "direct",
+    "answer_format": "Answer: ",
+    "choose_mode": "tokens",
+    "params": "30B"
+  },
+  "flan-t5-large":{
+    "model_name": "google/flan-t5-large",
+    "tokenizer_name": "google/flan-t5-large",
+    "do_chat_template": false,
+    "model_load": "direct",
+    "answer_format": "Answer: ",
+    "choose_mode": "tokens",
+    "params": "0.78B"
+  },
+  "flan-t5-small":{
+    "model_name": "google/flan-t5-small",
+    "tokenizer_name": "google/flan-t5-small",
+    "do_chat_template": false,
+    "model_load": "direct",
+    "answer_format": "Answer: ",
+    "choose_mode": "tokens",
+    "params": "0.78B"
+  },
+  
+  "flan-t5-xl":{
+    "model_name": "google/flan-t5-xl",
+    "tokenizer_name": "google/flan-t5-xl",
+    "do_chat_template": false,
+    "model_load": "direct",
+    "answer_format": "Answer: ",
+    "choose_mode": "tokens",
+    "params": "0.78B"
+  },
+  "flan-t5-xxl":{
+    "model_name": "google/flan-t5-xxl",
+    "tokenizer_name": "google/flan-t5-xxl",
+    "do_chat_template": false,
+    "model_load": "direct",
+    "answer_format": "Answer: ",
+    "choose_mode": "tokens",
+    "params": "0.78B"
+  },
+  "Falcon3-Mamba-7B-Base":{
+    "model_name": "tiiuae/Falcon3-Mamba-7B-Base",
+    "tokenizer_name": "tiiuae/Falcon3-Mamba-7B-Base",
+    "do_chat_template": false,
+    "model_load": "direct",
+    "answer_format": "Answer: ",
+    "choose_mode": "tokens",
+    "params": "7B"
+  },
+  "t5-large":{
+    "model_name": "google/t5-large-lm-adapt",
+    "tokenizer_name": "google/t5-large-lm-adapt",
+    "do_chat_template": false,
+    "model_load": "direct",
+    "answer_format": "Answer: ",
+    "choose_mode": "tokens",
+    "params": "0.78B"
+  },
+  "InternVL2-8B":{
+    "model_name": "OpenGVLab/InternVL2-8B",
+    "tokenizer_name": "OpenGVLab/InternVL2-8B",
+    "do_chat_template": true,
+    "model_load": "direct",
+    "answer_format": "Answer: ",
+    "choose_mode": "tokens",
+    "params": "8B"
+  },
+  "mamba-1.4b-hf":{
+    "model_name": "state-spaces/mamba-1.4b-hf",
+    "tokenizer_name": "state-spaces/mamba-1.4b-hf",
+    "do_chat_template": false,
+    "model_load": "direct",
+    "answer_format": "Answer: ",
+    "choose_mode": "tokens",
+    "params": "1.4B"
+  },
+  "Molmo-7B-D-0924":{
+    "model_name": "allenai/Molmo-7B-D-0924",
+    "tokenizer_name": "allenai/Molmo-7B-D-0924",
+    "do_chat_template": true,
+    "model_load": "direct",
+    "answer_format": "Answer: ",
+    "choose_mode": "tokens",
+    "params": "7B"
+  },
+  "Llama-3.1-8B-Instruct":{
+    "model_name": "meta-llama/Llama-3.1-8B-Instruct",
+    "tokenizer_name": "meta-llama/Llama-3.1-8B-Instruct",
+    "do_chat_template": true,
+    "model_load": "direct",
+    "answer_format": null,
+    "choose_mode": "tokens",
+    "params": "8B"
+  },
+  "Llama-3.2-3B-Instruct":{
+    "model_name": "meta-llama/Llama-3.2-3B-Instruct",
+    "tokenizer_name": "meta-llama/Llama-3.2-3B-Instruct",
+    "do_chat_template": true,
+    "model_load": "direct",
+    "answer_format": null,
+    "choose_mode": "tokens",
+    "params": "3B"
+  },
+  "mamba-2.8b-hf":{
+    "model_name": "state-spaces/mamba-2.8b-hf",
+    "tokenizer_name": "state-spaces/mamba-2.8b-hf",
+    "do_chat_template": false,
+    "model_load": "direct",
+    "answer_format": "Answer: ",
+    "choose_mode": "tokens",
+    "params": "2.8B"
+  },
+  
+  "t5-11b":{
+    "model_name": "google-t5/t5-11b",
+    "tokenizer_name": "google-t5/t5-11b",
+    "do_chat_template": false,
+    "model_load": "direct",
+    "answer_format": "Answer: ",
+    "choose_mode": "tokens",
+    "params": "11B"
+
+  },
+  "t5-3b":{
+    "model_name": "google-t5/t5-3b",
+    "tokenizer_name": "google-t5/t5-3b",
+    "do_chat_template": false,
+    "model_load": "direct",
+    "answer_format": "Answer: ",
+    "choose_mode": "tokens",
+    "params": "3B"
+  },
+  "Qwen3-8B-Base":{
+    "model_name": "Qwen/Qwen3-8B-Base",
+    "tokenizer_name": "Qwen/Qwen3-8B-Base",
+    "do_chat_template": false,
+    "model_load": "direct",
+    "answer_format": "Answer: ",
+    "choose_mode": "tokens",
+    "params": "8B"
+  },
+  "Qwen3-4B-Base":{
+    "model_name": "Qwen/Qwen3-4B-Base",
+    "tokenizer_name": "Qwen/Qwen3-4B-Base",
+    "do_chat_template": false,
+    "model_load": "direct",
+    "answer_format": "Answer: ",
+    "choose_mode": "tokens",
+    "params": "4B"
+  },
+  "Qwen3-4B-Instruct-2507":{
+    "model_name": "Qwen/Qwen3-4B-Instruct-2507",
+    "tokenizer_name": "Qwen/Qwen3-4B-Instruct-2507",
+    "do_chat_template": true,
+    "model_load": "direct",
+    "answer_format": null,
+    "choose_mode": "tokens",
+    "params": "4B"
+  },
+  "Qwen2.5-Omni-7B":{
+    "model_name": "Qwen/Qwen2.5-Omni-7B",
+    "tokenizer_name": "Qwen/Qwen2.5-Omni-7B",
+    "do_chat_template": true,
+    "model_load": "direct",
+    "answer_format": null,
+    "choose_mode": "tokens",
+    "params": "7B"
+  },
+  "Llama-4-Maverick-17B-128E":{
+    "model_name": "meta-llama/Llama-4-Maverick-17B-128E",
+    "tokenizer_name": "meta-llama/Llama-4-Maverick-17B-128E",
+    "do_chat_template": true,
+    "model_load": "direct",
+    "answer_format": null,
+    "choose_mode": "tokens",
+    "params": "17B"
+  },
+  "Llama-4-Scout-17B-16E-Instruct":{
+    "model_name": "meta-llama/Llama-4-Scout-17B-16E-Instruct",
+    "tokenizer_name": "meta-llama/Llama-4-Scout-17B-16E-Instruct",
+    "do_chat_template": true,
+    "model_load": "direct",
+    "answer_format": null,
+    "choose_mode": "tokens",
+    "params": "17B"
+  },
+  "Llama-4-Maverick-17B-128E-Instruct-FP8":{
+    "model_name": "meta-llama/Llama-4-Maverick-17B-128E-Instruct-FP8",
+    "tokenizer_name": "meta-llama/Llama-4-Maverick-17B-128E-Instruct-FP8",
+    "do_chat_template": true,
+    "model_load": "direct",
+    "answer_format": null,
+    "choose_mode": "tokens",
+    "params": "17B"
+  },
+  "Llama-4-Scout-17B-16E":{
+    "model_name": "meta-llama/Llama-4-Scout-17B-16E",
+    "tokenizer_name": "meta-llama/Llama-4-Scout-17B-16E",
+    "do_chat_template": false,
+    "model_load": "direct",
+    "answer_format": "Answer: ",
+    "choose_mode": "tokens",
+    "params": "17B"
+  },
+  "Yi-VL-6B":{
+    "model_name": "01-ai/Yi-VL-6B",
+    "tokenizer_name": "01-ai/Yi-VL-6B",
+    "do_chat_template": true,
+    "model_load": "direct",
+    "answer_format": "Answer: ",
+    "choose_mode": "tokens",
+    "params": "6B"
+  },
+  "llama-3.1-centaur-70b": {
+  "model_name": "marcelbinz/Llama-3.1-Centaur-70B-adapter",
+  "tokenizer_name": "marcelbinz/Llama-3.1-Centaur-70B-adapter",
+  "do_chat_template": true,
+  "model_load": "direct",
+  "answer_format": "Answer: ",
+  "choose_mode": "tokens",
+  "params": "70B"
+  },
+    "Llama-3.1-Tulu-3-8B-SFT": {
+    "model_name": "allenai/Llama-3.1-Tulu-3-8B-SFT",
+    "tokenizer_name": "allenai/Llama-3.1-Tulu-3-8B-SFT",
+    "do_chat_template": true,
+    "model_load": "direct",
+    "answer_format": null,
+    "choose_mode": "tokens",
+    "params": "8B"
+  },
+  "Llama-3.1-Tulu-3-8B-DPO": {
+    "model_name": "allenai/Llama-3.1-Tulu-3-8B-DPO",
+    "tokenizer_name": "allenai/Llama-3.1-Tulu-3-8B-DPO",
+    "do_chat_template": true,
+    "model_load": "direct",
+    "answer_format": null,
+    "choose_mode": "tokens",
+    "params": "8B"
+  },
+  "Llama-3.1-Tulu-3-8B": {
+    "model_name": "allenai/Llama-3.1-Tulu-3-8B",
+    "tokenizer_name": "allenai/Llama-3.1-Tulu-3-8B",
+    "do_chat_template": true,
+    "model_load": "direct",
+    "answer_format": null,
+    "choose_mode": "tokens",
+    "params": "8B"
+  },
+  "Llama-3.1-Tulu-3-8B-RM": {
+    "model_name": "allenai/Llama-3.1-Tulu-3-8B-RM",
+    "tokenizer_name": "allenai/Llama-3.1-Tulu-3-8B-RM",
+    "do_chat_template": true,
+    "model_load": "direct",
+    "answer_format": "Answer: ",
+    "choose_mode": "tokens",
+    "params": "8B"
   }
+
+
+
 }

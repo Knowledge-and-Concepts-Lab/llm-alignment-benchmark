@@ -3,8 +3,6 @@ from torch import Tensor, nn
 from torch.distributions.categorical import Categorical
 from torch.nn import functional as F
 from tqdm.auto import tqdm
-from transformer_lens import ActivationCache, HookedTransformer, utils
-from transformer_lens.hook_points import HookPoint
 from tqdm import tqdm
 import numpy as np
 import pandas as pd

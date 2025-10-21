@@ -10,5 +10,10 @@
         "d": 30,
         "max_epochs": 1000,
         "embeddings_name": "1a_salmon_embeddings"
-  }
+    },
+    "embedding_from_folder": {
+        "d":30,
+        "max_epochs":500,
+        "embeddings_name":"1a_salmon_embeddings"
+    }
 }
