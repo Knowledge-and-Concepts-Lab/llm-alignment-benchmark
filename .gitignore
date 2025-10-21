@@ -12,7 +12,11 @@ env/
 venv/
 ENV/
 data/spose/
+/results/1a/embed_out/gemma-3-1b-it/
+/results/1a/embed_out/gemma-3-1b-it
+/results
 
+results/
 analysis/
 # Conda environments
 *.conda
@@ -79,7 +83,7 @@ temp_cache/
 
 .nfs000000020163196c000077f5
 
-./results/
+
 
 # CHTC / job artifacts
 *.out
