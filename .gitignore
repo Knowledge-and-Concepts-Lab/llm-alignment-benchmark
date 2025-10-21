@@ -64,7 +64,6 @@ triton_cache/
 temp_cache/
 
 # Experiment results and outputs
-results/
 *.tar
 *.tar.gz
 *.zip
