@@ -12,6 +12,7 @@ env/
 venv/
 ENV/
 
+analysis/
 # Conda environments
 *.conda
 *.yaml
