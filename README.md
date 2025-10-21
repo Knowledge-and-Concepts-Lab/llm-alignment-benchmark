@@ -69,6 +69,9 @@ make workflow FILE=example_workflow.txt
 
 This will automatically run all of the experiments listed in the txt in order, on nohup (in background). logs will be exported to /logs. If one experiment in the chain fails, the others will still run.
 
+### SPoSE data
+
+Human SPoSE data for THINGS must be downloaded externally and added in the folder data/spose/. You can access THINGS data (for the behavioral triplet odd-one-out-task) here: https://osf.io/f5rn6/
 
 
 
